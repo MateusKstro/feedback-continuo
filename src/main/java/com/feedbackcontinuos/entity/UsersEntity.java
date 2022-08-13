@@ -1,10 +1,14 @@
 package com.feedbackcontinuos.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.feedbackcontinuos.enums.Role;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Builder
 @Getter
@@ -32,6 +36,14 @@ public class UsersEntity implements UserDetails {
 
     @Column(name = "active")
     private boolean active;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "feedbackEntityGiven", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FeedBackEntity> feedbacksGiven;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "feedbackEntityReceived", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FeedBackEntity> feedBackEntities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
