@@ -5,19 +5,20 @@ import com.feedbackcontinuos.dto.UsersCreateDTO;
 import com.feedbackcontinuos.dto.UsersDTO;
 import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.repository.UsersRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UsersService {
 
-    @Autowired
-    private UsersRepository usersRepository;
-    @Autowired
-    private ObjectMapper objectMapper;
+
+    private final UsersRepository usersRepository;
+    private final ObjectMapper objectMapper;
 
     public UsersDTO create(UsersCreateDTO usersCreateDTO, MultipartFile avatar) throws IOException {
         UsersEntity user = objectMapper.convertValue(usersCreateDTO, UsersEntity.class);
@@ -27,5 +28,9 @@ public class UsersService {
         }
         usersRepository.save(user);
         return objectMapper.convertValue(user, UsersDTO.class);
+    }
+
+    public Optional<UsersEntity> findByEmail(String email){
+        return usersRepository.findByEmail(email);
     }
 }
