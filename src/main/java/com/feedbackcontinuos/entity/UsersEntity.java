@@ -1,13 +1,11 @@
 package com.feedbackcontinuos.entity;
 
 import com.feedbackcontinuos.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,7 +27,7 @@ public class UsersEntity {
     @Column(name = "user_password")
     private String userPassword;
     @Column(name = "avatar")
-    private byte[] avatar;
+    private String avatar;
     @Column(name = "active")
     private boolean active;
 }
