@@ -1,16 +1,12 @@
 package com.feedbackcontinuos.entity;
 
 import com.feedbackcontinuos.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Collection;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
