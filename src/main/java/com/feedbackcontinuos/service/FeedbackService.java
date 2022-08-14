@@ -15,13 +15,13 @@ public class FeedbackService {
     private final UsersService usersService;
 
 
-    public FeedbackDTO create(FeedbackCreateDTO createDTO) throws RegraDeNegocioException {
-        UsersEntity usersEntity = usersService.getLogedUserEntity();
-
-        if(createDTO.getFeedbackIdUser().equals(usersEntity.getIdUser())){
-            throw new RegraDeNegocioException("Nao e possivel fazer feedback para si mesmo");
-        }
-
-        UsersEntity received = usersService.getUserById(Integer.valueOf(createDTO.getFeedbackIdUser()));
-    }
+//    public FeedbackDTO create(FeedbackCreateDTO createDTO) throws RegraDeNegocioException {
+//        UsersEntity usersEntity = usersService.getLogedUserEntity();
+//
+//        if(createDTO.getFeedbackIdUser().equals(usersEntity.getIdUser())){
+//            throw new RegraDeNegocioException("Nao e possivel fazer feedback para si mesmo");
+//        }
+//
+//        UsersEntity received = usersService.getUserById(Integer.valueOf(createDTO.getFeedbackIdUser()));
+//    }
 }

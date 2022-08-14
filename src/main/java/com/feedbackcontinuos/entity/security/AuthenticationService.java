@@ -1,4 +1,4 @@
-package com.feedbackcontinuos.security;
+package com.feedbackcontinuos.entity.security;
 
 import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.service.UsersService;

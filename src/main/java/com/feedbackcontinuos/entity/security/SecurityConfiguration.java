@@ -1,9 +1,8 @@
-package com.feedbackcontinuos.security;
+package com.feedbackcontinuos.entity.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -42,7 +41,8 @@ public class SecurityConfiguration {
                 "/v3/api-docs/**",
                 "/swagger-resources/**",
                 "/swagger-ui/**",
-                "/");
+                "/",
+                "/tag");
     }
 
     @Bean
