@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,9 +70,5 @@ public class UsersService {
 
     public Integer getIdLoggedUser() {
         return (Integer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
-
-    public UsersDTO getById() throws RegraDeNegocioException {
-        return objectMapper.convertValue(getLoggedUser(), UsersDTO.class);
     }
 }
