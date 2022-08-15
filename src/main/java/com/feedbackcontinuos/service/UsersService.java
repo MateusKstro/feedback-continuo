@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -23,11 +25,11 @@ public class UsersService {
     private AccessEntity accessEntity =
             new AccessEntity(1, "ROLE_USER", null);
 
-    public UsersDTO create(UsersCreateDTO usersCreateDTO) {
+    public void create(UsersCreateDTO usersCreateDTO) {
         UsersEntity user = objectMapper.convertValue(usersCreateDTO, UsersEntity.class);
         user.setAccessEntity(accessEntity);
-//        if (!avatar.isEmpty()){
-//            byte[] byteArray = avatar.getBytes();
+//        if (!file.isEmpty()){
+//            byte[] byteArray = file.getBytes();
 //            user.setAvatar(byteArray);
 //        }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -35,7 +37,7 @@ public class UsersService {
         user.setUserPassword(senhaCrypt);
         user.setUserRole(usersCreateDTO.getUserRole().getDescription());
         usersRepository.save(user);
-        return objectMapper.convertValue(user, UsersDTO.class);
+
     }
 
     public Optional<UsersEntity> findByEmail(String email) {

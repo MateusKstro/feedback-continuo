@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class UsersDTO {
 
+    @Schema(description = "Id do Usuário")
+    private Integer idUser;
     @Schema(description = "Nome do Usuário")
     private String userNamer;
     @Schema(description = "Função do Usuário")
