@@ -8,11 +8,13 @@ import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,18 +23,15 @@ public class UsersService {
 
     private final UsersRepository usersRepository;
     private final ObjectMapper objectMapper;
-    private AccessEntity accessEntity =
-            new AccessEntity(1, "ROLE_USER", null);
-
-    private AccessEntity accessEntity =
+    private final AccessEntity accessEntity =
             new AccessEntity(1, "ROLE_USER", null);
 
     public UsersDTO create(UsersCreateDTO usersCreateDTO) {
         UsersEntity user = objectMapper.convertValue(usersCreateDTO, UsersEntity.class);
         user.setAccessEntity(accessEntity);
 //        if (!avatar.isEmpty()){
-//            byte [] byteArray = avatar.getBytes();
-//            user.setAvatar(byteArray.toString());
+//            byte[] byteArray = avatar.getBytes();
+//            user.setAvatar(byteArray);
 //        }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String senhaCrypt = passwordEncoder.encode(usersCreateDTO.getUserPassword());
@@ -40,6 +39,22 @@ public class UsersService {
         user.setUserRole(usersCreateDTO.getUserRole().getDescription());
         usersRepository.save(user);
         return objectMapper.convertValue(user, UsersDTO.class);
+    }
+
+    public void uploadFile(Integer id, Optional<MultipartFile> file) throws RegraDeNegocioException, IOException {
+        if (file.isPresent()){
+            UsersEntity user = findById(id);
+            byte[] byteArray = file.get().getBytes();
+            user.setAvatar(byteArray);
+            usersRepository.save(user);
+        }
+    }
+    public List<UserWithNameAndAvatarDTO> findAll() throws RegraDeNegocioException {
+        List<UsersEntity> users = usersRepository.findAll();
+        users.remove(getLoggedUser());
+        return users.stream()
+                .map(usersEntity -> objectMapper.convertValue(usersEntity, UserWithNameAndAvatarDTO.class))
+                .toList();
     }
 
     public Optional<UsersEntity> findByEmail(String email) {

@@ -28,6 +28,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests((authz) ->
                         authz
+                                .antMatchers("/users/list-all").hasRole("USER")
                                 .anyRequest().authenticated()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
@@ -42,6 +43,7 @@ public class SecurityConfiguration {
                 "/swagger-ui/**",
                 "/users/login",
                 "/users/create",
+                "/users/update-file",
                 "/");
     }
 
