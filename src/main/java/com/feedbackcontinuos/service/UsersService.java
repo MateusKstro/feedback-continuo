@@ -8,6 +8,7 @@ import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,16 +19,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UsersService {
 
-
     private final UsersRepository usersRepository;
     private final ObjectMapper objectMapper;
 
+    private AccessEntity accessEntity =
+            new AccessEntity(1, "ROLE_USER", null);
+
     public UsersDTO create(UsersCreateDTO usersCreateDTO) {
         UsersEntity user = objectMapper.convertValue(usersCreateDTO, UsersEntity.class);
-        user.setAccessEntity(new AccessEntity(1, "ROLE_USER", null));
+        user.setAccessEntity(accessEntity);
 //        if (!avatar.isEmpty()){
-//            byte[] byteArray = avatar.getBytes();
-//            user.setAvatar(byteArray);
+//            byte [] byteArray = avatar.getBytes();
+//            user.setAvatar(byteArray.toString());
 //        }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String senhaCrypt = passwordEncoder.encode(usersCreateDTO.getUserPassword());
