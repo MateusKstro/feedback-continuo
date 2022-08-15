@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Builder
 @Getter
@@ -46,4 +47,12 @@ public class FeedBackEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feedback_id_user")
     private UsersEntity feedbackEntityReceived;
+
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "feedback_tags",
+            joinColumns = @JoinColumn(name = "id_feedback"),
+            inverseJoinColumns = @JoinColumn(name = "id_tag"))
+    private Set<TagEntity> tagEntities;
 }
