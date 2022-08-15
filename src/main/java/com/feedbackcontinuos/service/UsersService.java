@@ -1,6 +1,7 @@
 package com.feedbackcontinuos.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.feedbackcontinuos.dto.UserWithNameAndAvatarDTO;
 import com.feedbackcontinuos.dto.UsersCreateDTO;
 import com.feedbackcontinuos.dto.UsersDTO;
 import com.feedbackcontinuos.entity.AccessEntity;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,6 +45,13 @@ public class UsersService {
             user.setAvatar(byteArray);
             usersRepository.save(user);
         }
+    }
+    public List<UserWithNameAndAvatarDTO> findAll() throws RegraDeNegocioException {
+        List<UsersEntity> users = usersRepository.findAll();
+        users.remove(getLoggedUser());
+        return users.stream()
+                .map(usersEntity -> objectMapper.convertValue(usersEntity, UserWithNameAndAvatarDTO.class))
+                .toList();
     }
 
     public Optional<UsersEntity> findByEmail(String email) {

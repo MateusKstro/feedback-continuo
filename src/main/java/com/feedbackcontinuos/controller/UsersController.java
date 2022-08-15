@@ -2,6 +2,7 @@ package com.feedbackcontinuos.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feedbackcontinuos.dto.LoginDTO;
+import com.feedbackcontinuos.dto.UserWithNameAndAvatarDTO;
 import com.feedbackcontinuos.dto.UsersCreateDTO;
 import com.feedbackcontinuos.dto.UsersDTO;
 import com.feedbackcontinuos.entity.UsersEntity;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -59,5 +61,10 @@ public class UsersController {
                        @RequestPart(value = "file", required = false) Optional<MultipartFile> file) throws RegraDeNegocioException, IOException {
         Integer idUser = Integer.valueOf(id);
         usersService.uploadFile(idUser, file);
+    }
+
+    @GetMapping("/list-all")
+    public List<UserWithNameAndAvatarDTO> getAll() throws RegraDeNegocioException {
+        return usersService.findAll();
     }
 }
