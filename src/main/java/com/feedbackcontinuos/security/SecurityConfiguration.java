@@ -42,6 +42,7 @@ public class SecurityConfiguration {
                 "/swagger-ui/**",
                 "/users/login",
                 "/users/create",
+                "/users/update-file",
                 "/");
     }
 

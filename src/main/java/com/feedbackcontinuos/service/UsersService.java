@@ -22,22 +22,27 @@ public class UsersService {
 
     private final UsersRepository usersRepository;
     private final ObjectMapper objectMapper;
-    private AccessEntity accessEntity =
+    private final AccessEntity accessEntity =
             new AccessEntity(1, "ROLE_USER", null);
 
-    public void create(UsersCreateDTO usersCreateDTO) {
+    public UsersDTO create(UsersCreateDTO usersCreateDTO){
         UsersEntity user = objectMapper.convertValue(usersCreateDTO, UsersEntity.class);
         user.setAccessEntity(accessEntity);
-//        if (!file.isEmpty()){
-//            byte[] byteArray = file.getBytes();
-//            user.setAvatar(byteArray);
-//        }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String senhaCrypt = passwordEncoder.encode(usersCreateDTO.getUserPassword());
         user.setUserPassword(senhaCrypt);
         user.setUserRole(usersCreateDTO.getUserRole().getDescription());
         usersRepository.save(user);
+        return objectMapper.convertValue(user, UsersDTO.class);
+    }
 
+    public void uploadFile(Integer id, Optional<MultipartFile> file) throws RegraDeNegocioException, IOException {
+        if (file.isPresent()){
+            UsersEntity user = findById(id);
+            byte[] byteArray = file.get().getBytes();
+            user.setAvatar(byteArray);
+            usersRepository.save(user);
+        }
     }
 
     public Optional<UsersEntity> findByEmail(String email) {

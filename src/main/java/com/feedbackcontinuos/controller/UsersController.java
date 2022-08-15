@@ -1,15 +1,18 @@
 package com.feedbackcontinuos.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feedbackcontinuos.dto.LoginDTO;
 import com.feedbackcontinuos.dto.UsersCreateDTO;
 import com.feedbackcontinuos.dto.UsersDTO;
 import com.feedbackcontinuos.entity.UsersEntity;
+import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.security.TokenService;
 import com.feedbackcontinuos.service.UsersService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,9 +20,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @Validated
@@ -47,8 +50,14 @@ public class UsersController {
         UsersEntity usuario = (UsersEntity) usuarioLogado;
         return tokenService.getToken(usuario);
     }
-    @PostMapping("/create")
-    public void post(@RequestBody UsersCreateDTO usersCreateDTO) {
-        usersService.create(usersCreateDTO);
+    @PostMapping(value = "/create")
+    public UsersDTO post(@RequestBody @Valid UsersCreateDTO usersCreateDTO){
+        return usersService.create(usersCreateDTO);
+    }
+    @PutMapping(value = "/update-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void update(@RequestPart("id") String id,
+                       @RequestPart(value = "file", required = false) Optional<MultipartFile> file) throws RegraDeNegocioException, IOException {
+        Integer idUser = Integer.valueOf(id);
+        usersService.uploadFile(idUser, file);
     }
 }
