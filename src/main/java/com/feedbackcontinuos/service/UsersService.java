@@ -21,6 +21,8 @@ public class UsersService {
 
     private final UsersRepository usersRepository;
     private final ObjectMapper objectMapper;
+    private AccessEntity accessEntity =
+            new AccessEntity(1, "ROLE_USER", null);
 
     private AccessEntity accessEntity =
             new AccessEntity(1, "ROLE_USER", null);
