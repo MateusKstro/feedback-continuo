@@ -1,4 +1,4 @@
-package com.feedbackcontinuos.entity.security;
+package com.feedbackcontinuos.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,6 +36,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         if (token == null) {
             return null;
         }
-        return token.replace(BEARER, ""); // "Bearer "21414124 -> 21414124
+        return token.replace(BEARER, "");
     }
 }

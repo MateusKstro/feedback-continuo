@@ -1,4 +1,4 @@
-package com.feedbackcontinuos.entity.security;
+package com.feedbackcontinuos.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +28,6 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests((authz) ->
                         authz
-                                .antMatchers("/quarto/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
@@ -41,8 +40,7 @@ public class SecurityConfiguration {
                 "/v3/api-docs/**",
                 "/swagger-resources/**",
                 "/swagger-ui/**",
-                "/",
-                "/tag");
+                "/users/**");
     }
 
     @Bean

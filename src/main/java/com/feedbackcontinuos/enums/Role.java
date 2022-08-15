@@ -22,4 +22,7 @@ public enum Role {
     Role(String role){
         this.role = role;
     }
+    public String getDescription() {
+        return role;
+    }
 }

@@ -1,7 +1,6 @@
 package com.feedbackcontinuos.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.feedbackcontinuos.enums.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,19 +22,18 @@ public class UsersEntity implements UserDetails {
     @SequenceGenerator(name = "USERS_SEQ", sequenceName = "seq_users", allocationSize = 1)
     @Column(name = "id_user")
     private Integer idUser;
+    @Column(name = "id_access", insertable = false, updatable = false)
+    private Integer userAcess;
     @Column(name = "user_name")
     private String userNamer;
     @Column(name = "user_role")
-    private Role userRole;
+    private String userRole;
     @Column(name = "email")
     private String email;
     @Column(name = "user_password")
     private String userPassword;
     @Column(name = "avatar")
     private byte[] avatar;
-
-    @Column(name = "active")
-    private boolean active;
 
     @JsonIgnore
     @OneToMany(mappedBy = "feedbackEntityGiven", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -45,16 +43,19 @@ public class UsersEntity implements UserDetails {
     @OneToMany(mappedBy = "feedbackEntityReceived", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FeedBackEntity> feedBackEntities;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_access", referencedColumnName = "id_access")
+    private AccessEntity accessEntity;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(accessEntity);
     }
 
     @Override
     public String getPassword() {
         return userPassword;
     }
-
     @Override
     public String getUsername() {
         return email;
@@ -78,9 +79,5 @@ public class UsersEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public boolean isActive() {
-        return active;
     }
 }

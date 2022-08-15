@@ -1,7 +1,6 @@
-package com.feedbackcontinuos.entity.security;
+package com.feedbackcontinuos.security;
 
 import com.feedbackcontinuos.entity.UsersEntity;
-import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.service.UsersService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -29,17 +28,14 @@ public class TokenService {
 
     private static final String KEY_CARGO = "roles";
 
-    public String getToken(UsersEntity usersEntity) throws RegraDeNegocioException {
-        if (usersEntity.isActive() == false){
-            throw new RegraDeNegocioException("Usuário desativado");
-        }
+    public String getToken(UsersEntity usersEntity) {
         Date now = new Date();
         Date exp = new Date(now.getTime() + Long.valueOf(expiration));
 
-        List<String> cargos = List.of(usersEntity.getUsername());
+        List<String> cargos = List.of(usersEntity.getAccessEntity().getAccessName());
 
         String token = Jwts.builder()
-                .setIssuer("pessoa-api")
+                .setIssuer("feedback-continuos-api")
                 .claim(Claims.ID, usersEntity.getIdUser())
                 .claim(KEY_CARGO, cargos)
                 .setIssuedAt(now)
