@@ -20,8 +20,9 @@ public class FeedbackController {
 
 
     @PostMapping
-    public ResponseEntity<FeedbackDTO> create(@RequestBody FeedbackCreateDTO feedbackCreateDTO) throws RegraDeNegocioException {
-        return ResponseEntity.ok(feedbackService.create(feedbackCreateDTO));
+    public ResponseEntity<Void> create(@RequestBody FeedbackCreateDTO feedbackCreateDTO) throws RegraDeNegocioException {
+        feedbackService.create(feedbackCreateDTO);
+        return ResponseEntity.ok().build();
     }
 
 }

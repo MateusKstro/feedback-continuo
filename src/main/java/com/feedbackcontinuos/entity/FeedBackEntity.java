@@ -32,10 +32,10 @@ public class FeedBackEntity {
     private Boolean anonymous;
 
     @Column(name = "id_user", insertable = false, updatable = false)
-    private String userId;
+    private Integer userId;
 
     @Column(name = "feedback_id_user", insertable = false, updatable = false)
-    private String feedbackUserId;
+    private Integer feedbackUserId;
 
 
     @JsonIgnore

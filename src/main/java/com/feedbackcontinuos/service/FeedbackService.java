@@ -8,9 +8,11 @@ import com.feedbackcontinuos.entity.FeedBackEntity;
 import com.feedbackcontinuos.entity.TagEntity;
 import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
+import com.feedbackcontinuos.repository.FeedbackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,34 +26,45 @@ public class FeedbackService {
 
     private final ObjectMapper objectMapper;
 
+    private final FeedbackRepository feedbackRepository;
 
-    public FeedbackDTO create(FeedbackCreateDTO createDTO) throws RegraDeNegocioException {
-        if (createDTO.getAnonymous()) {
-            criandoFeedback(createDTO);
-        } else {
-            UsersEntity usersEntity = usersService.getLoggedUser();
-            if (createDTO.getFeedbackIdUser().equals(usersEntity.getIdUser())) {
-                throw new RegraDeNegocioException("Nao é possivel fazer feedback para si mesmo");
-            }
-            criandoFeedback(createDTO);
+
+    public void create(FeedbackCreateDTO createDTO) throws RegraDeNegocioException {
+
+        UsersEntity usersEntity = usersService.getLoggedUser();
+        if (createDTO.getFeedbackIdUser().equals(usersEntity.getIdUser())) {
+            throw new RegraDeNegocioException("Nao é possivel fazer feedback para si mesmo");
         }
-        return objectMapper.convertValue(createDTO, FeedbackDTO.class);
+        criandoFeedback(createDTO);
     }
 
 
-
-
-
-
     private void criandoFeedback(FeedbackCreateDTO createDTO) throws RegraDeNegocioException {
-        UsersEntity received = usersService.findById(Integer.valueOf(createDTO.getFeedbackIdUser()));
+
+        FeedBackEntity entity = toFeedbackEntity(createDTO);
+        feedbackRepository.save(entity);
+    }
+
+    private FeedBackEntity toFeedbackEntity(FeedbackCreateDTO feedbackCreateDTO) throws RegraDeNegocioException {
+        UsersEntity given = usersService.getLoggedUser();
+
+        UsersEntity received = usersService.findById(Integer.valueOf(feedbackCreateDTO.getFeedbackIdUser()));
 
         Set<TagEntity> tags = new HashSet<>();
-        createDTO.getTagsList().forEach(tag -> {
+        feedbackCreateDTO.getTagsList().forEach(tag -> {
             TagEntity tagEntity = tagsService.findTag(tag);
             tags.add(tagEntity);
         });
 
-        FeedBackEntity feedBackEntity = objectMapper.convertValue(createDTO, FeedBackEntity.class);
+         return FeedBackEntity.builder()
+                .anonymous(feedbackCreateDTO.getAnonymous())
+                .feedbackEntityGiven(given)
+                .feedbackEntityReceived(received)
+                .feedbackUserId(received.getIdUser())
+                .userId(given.getIdUser())
+                .dataEHora(LocalDateTime.now())
+                .message(feedbackCreateDTO.getMessage())
+                .tagEntities(tags)
+                .build();
     }
 }
