@@ -89,12 +89,9 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.4</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-				<source>1.8</source>
-				<target>1.8</target>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -102,6 +99,11 @@
 						</exclude>
 					</excludes>
 				</configuration>
+				<plugin>
+					<groupId>com.heroku.sdk</groupId>
+					<artifactId>heroku-maven-plugin</artifactId>
+					<version>2.0.8</version>
+				</plugin>
 			</plugin>
 		</plugins>
 
