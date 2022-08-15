@@ -1,9 +1,11 @@
 package com.feedbackcontinuos.dto;
 
+import com.feedbackcontinuos.enums.Tags;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -22,4 +24,8 @@ public class FeedbackCreateDTO {
     @NotEmpty
     @Schema(description = "id de quem recebeu o feedback")
     private String feedbackIdUser;
+
+    @NotEmpty
+    @Schema(description = "Lista de tags")
+    private List<Tags> tagsList;
 }
