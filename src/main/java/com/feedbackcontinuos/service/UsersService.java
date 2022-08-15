@@ -1,6 +1,7 @@
 package com.feedbackcontinuos.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.feedbackcontinuos.dto.UserWithNameAndAvatarDTO;
 import com.feedbackcontinuos.dto.UsersCreateDTO;
 import com.feedbackcontinuos.dto.UsersDTO;
 import com.feedbackcontinuos.entity.AccessEntity;
@@ -29,10 +30,6 @@ public class UsersService {
     public UsersDTO create(UsersCreateDTO usersCreateDTO) {
         UsersEntity user = objectMapper.convertValue(usersCreateDTO, UsersEntity.class);
         user.setAccessEntity(accessEntity);
-//        if (!avatar.isEmpty()){
-//            byte[] byteArray = avatar.getBytes();
-//            user.setAvatar(byteArray);
-//        }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String senhaCrypt = passwordEncoder.encode(usersCreateDTO.getUserPassword());
         user.setUserPassword(senhaCrypt);
