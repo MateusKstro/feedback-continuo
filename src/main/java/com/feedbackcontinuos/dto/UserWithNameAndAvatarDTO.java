@@ -8,6 +8,8 @@ public class UserWithNameAndAvatarDTO {
 
     @Schema(description = "Nome do Usuário")
     private String userNamer;
+    @Schema(description = "Cargo do Usuário")
+    private String userRole;
     @Schema(description = "Imagem do Usuário")
     private String avatar;
 }

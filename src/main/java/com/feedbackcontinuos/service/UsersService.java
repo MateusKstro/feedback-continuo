@@ -1,6 +1,7 @@
 package com.feedbackcontinuos.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.feedbackcontinuos.dto.UserFullDTO;
 import com.feedbackcontinuos.dto.UserWithNameAndAvatarDTO;
 import com.feedbackcontinuos.dto.UsersCreateDTO;
 import com.feedbackcontinuos.dto.UsersDTO;
@@ -25,7 +26,7 @@ public class UsersService {
 
     private final UsersRepository usersRepository;
     private final ObjectMapper objectMapper;
-    private final AccessEntity accessEntity =
+    private AccessEntity accessEntity =
             new AccessEntity(1, "ROLE_USER", null);
 
     public UsersDTO create(UsersCreateDTO usersCreateDTO) {
@@ -52,7 +53,13 @@ public class UsersService {
         users.remove(getLoggedUser());
         return users.stream()
                 .map(usersEntity -> objectMapper.convertValue(usersEntity, UserWithNameAndAvatarDTO.class))
-                .toList();
+                .map(userWithNameAndAvatarDTO -> {
+                    if (userWithNameAndAvatarDTO.getAvatar().isEmpty()) {
+                        userWithNameAndAvatarDTO.setAvatar(null);
+                    } else {
+                        userWithNameAndAvatarDTO.setAvatar(Base64.getEncoder().encodeToString(userWithNameAndAvatarDTO.getAvatar().getBytes()));
+                    } return userWithNameAndAvatarDTO;
+                }).toList();
     }
 
     public Optional<UsersEntity> findByEmail(String email) {
@@ -70,5 +77,12 @@ public class UsersService {
 
     public Integer getIdLoggedUser() {
         return (Integer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+    public UserFullDTO getById() throws RegraDeNegocioException {
+        UsersEntity user = getLoggedUser();
+        if (user.getAvatar() != null){
+            user.setAvatar(Base64.getEncoder().encode(user.getAvatar()));
+        }
+        return objectMapper.convertValue(user, UserFullDTO.class);
     }
 }
