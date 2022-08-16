@@ -82,4 +82,10 @@ public class UsersController {
     public UserFullDTO getLoggedUser() throws RegraDeNegocioException {
         return usersService.getById();
     }
+    @Operation(summary = "Retornar usuário por id", description = "Retorna o usuário pelo id")
+    @ApiResponse(responseCode = "200", description = "Retorna o usuário pelo id")
+    @GetMapping("/retornar-usuario")
+    public UserFullDTO getIdUser(Integer id) throws RegraDeNegocioException {
+        return usersService.getByIdUser(id);
+    }
 }

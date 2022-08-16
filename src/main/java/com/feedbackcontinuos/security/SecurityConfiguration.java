@@ -29,6 +29,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((authz) ->
                         authz
                                 .antMatchers("/users/list-all").hasRole("USER")
+                                .antMatchers("/users/recuperar-usuario-logado").hasRole("USER")
+                                .antMatchers("/user/retornar-usuario").hasRole("USER")
                                 .anyRequest().authenticated()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);

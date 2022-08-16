@@ -48,18 +48,17 @@ public class UsersService {
             usersRepository.save(user);
         }
     }
+
     public List<UserWithNameAndAvatarDTO> findAll() throws RegraDeNegocioException {
         List<UsersEntity> users = usersRepository.findAll();
         users.remove(getLoggedUser());
         return users.stream()
-                .map(usersEntity -> objectMapper.convertValue(usersEntity, UserWithNameAndAvatarDTO.class))
-                .map(userWithNameAndAvatarDTO -> {
-                    if (userWithNameAndAvatarDTO.getAvatar().isEmpty()) {
-                        userWithNameAndAvatarDTO.setAvatar(null);
-                    } else {
-                        userWithNameAndAvatarDTO.setAvatar(Base64.getEncoder().encodeToString(userWithNameAndAvatarDTO.getAvatar().getBytes()));
-                    } return userWithNameAndAvatarDTO;
-                }).toList();
+                .filter(usersEntity -> usersEntity.getAvatar() != null)
+                .map(usersEntity -> {
+                    usersEntity.setAvatar(Base64.getEncoder().encode(usersEntity.getAvatar()));
+                    return usersEntity;
+                }).map(usersEntity -> objectMapper.convertValue(usersEntity, UserWithNameAndAvatarDTO.class))
+                .toList();
     }
 
     public Optional<UsersEntity> findByEmail(String email) {
@@ -80,6 +79,13 @@ public class UsersService {
     }
     public UserFullDTO getById() throws RegraDeNegocioException {
         UsersEntity user = getLoggedUser();
+        if (user.getAvatar() != null){
+            user.setAvatar(Base64.getEncoder().encode(user.getAvatar()));
+        }
+        return objectMapper.convertValue(user, UserFullDTO.class);
+    }
+    public UserFullDTO getByIdUser(Integer id) throws RegraDeNegocioException {
+        UsersEntity user = findById(id);
         if (user.getAvatar() != null){
             user.setAvatar(Base64.getEncoder().encode(user.getAvatar()));
         }
