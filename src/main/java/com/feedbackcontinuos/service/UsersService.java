@@ -77,6 +77,8 @@ public class UsersService {
     public Integer getIdLoggedUser() {
         return (Integer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
+
+
     public UserFullDTO getById() throws RegraDeNegocioException {
         UsersEntity user = getLoggedUser();
         if (user.getAvatar() != null){

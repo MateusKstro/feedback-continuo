@@ -15,7 +15,8 @@ import java.util.Set;
 public class TagEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_TAG")
+    @SequenceGenerator(name = "SEQ_TAG", sequenceName = "seq_tags", allocationSize = 1)
     @Column(name = "id_tag")
     private Integer idTag;
 
@@ -27,5 +28,5 @@ public class TagEntity {
     @JoinTable(name = "feedback_tags",
             joinColumns = @JoinColumn(name = "id_tag"),
             inverseJoinColumns = @JoinColumn(name = "id_feedback"))
-    private Set<TagEntity> tagEntities;
+    private Set<FeedBackEntity> feedBackEntities;
 }

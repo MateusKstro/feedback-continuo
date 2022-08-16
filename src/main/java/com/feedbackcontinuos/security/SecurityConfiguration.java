@@ -3,6 +3,7 @@ package com.feedbackcontinuos.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,9 +29,11 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests((authz) ->
                         authz
+
                                 .antMatchers("/users/list-all").hasRole("USER")
                                 .antMatchers("/users/recuperar-usuario-logado").hasRole("USER")
                                 .antMatchers("/user/retornar-usuario").hasRole("USER")
+                                .antMatchers(HttpMethod.POST, "/feedback").hasRole("USER")
                                 .anyRequest().authenticated()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
@@ -46,7 +49,6 @@ public class SecurityConfiguration {
                 "/users/login",
                 "/users/create",
                 "/users/update-file",
-                "/feedback/**",
                 "/");
     }
 

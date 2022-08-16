@@ -28,8 +28,6 @@ public class FeedbackService {
 
     private final TagsService tagsService;
 
-    private final ObjectMapper objectMapper;
-
     private final FeedbackRepository feedbackRepository;
 
 
