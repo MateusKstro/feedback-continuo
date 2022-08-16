@@ -1,15 +1,13 @@
 package com.feedbackcontinuos.service;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feedbackcontinuos.dto.FeedbackCompletoDTO;
 import com.feedbackcontinuos.dto.FeedbackCreateDTO;
-import com.feedbackcontinuos.dto.FeedbackDTO;
 import com.feedbackcontinuos.entity.FeedBackEntity;
 import com.feedbackcontinuos.entity.TagEntity;
 import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
-import com.feedbackcontinuos.repository.FeedbackRepository;
+import com.feedbackcontinuos.exceptions.repository.FeedbackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

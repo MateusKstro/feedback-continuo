@@ -9,7 +9,7 @@ import com.feedbackcontinuos.dto.UsersDTO;
 import com.feedbackcontinuos.entity.AccessEntity;
 import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.enums.Role;
-import com.feedbackcontinuos.repository.UsersRepository;
+import com.feedbackcontinuos.exceptions.repository.UsersRepository;
 import com.feedbackcontinuos.service.UsersService;
 import org.junit.Before;
 import org.junit.Test;

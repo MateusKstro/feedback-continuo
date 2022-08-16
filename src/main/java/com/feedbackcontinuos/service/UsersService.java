@@ -8,7 +8,7 @@ import com.feedbackcontinuos.dto.UsersDTO;
 import com.feedbackcontinuos.entity.AccessEntity;
 import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
-import com.feedbackcontinuos.repository.UsersRepository;
+import com.feedbackcontinuos.exceptions.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
