@@ -53,9 +53,10 @@ public class UsersService {
         List<UsersEntity> users = usersRepository.findAll();
         users.remove(getLoggedUser());
         return users.stream()
-                .filter(usersEntity -> usersEntity.getAvatar() != null)
                 .map(usersEntity -> {
-                    usersEntity.setAvatar(Base64.getEncoder().encode(usersEntity.getAvatar()));
+                    if (usersEntity.getAvatar() != null) {
+                        usersEntity.setAvatar(Base64.getEncoder().encode(usersEntity.getAvatar()));
+                    }
                     return usersEntity;
                 }).map(usersEntity -> objectMapper.convertValue(usersEntity, UserWithNameAndAvatarDTO.class))
                 .toList();
