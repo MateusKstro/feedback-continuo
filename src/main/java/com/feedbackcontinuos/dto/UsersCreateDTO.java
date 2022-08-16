@@ -13,7 +13,7 @@ public class UsersCreateDTO {
 
     @NotEmpty
     @Schema(description = "Nome do Usuário")
-    private String userNamer;
+    private String userName;
     @NotNull
     @Schema(description = "Função do Usuário")
     private Role userRole;

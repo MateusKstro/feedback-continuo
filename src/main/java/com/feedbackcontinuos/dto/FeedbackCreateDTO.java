@@ -23,7 +23,7 @@ public class FeedbackCreateDTO {
 
     @NotEmpty
     @Schema(description = "id de quem recebeu o feedback")
-    private String feedbackIdUser;
+    private Integer feedbackIdUser;
 
     @NotEmpty
     @Schema(description = "Lista de tags")

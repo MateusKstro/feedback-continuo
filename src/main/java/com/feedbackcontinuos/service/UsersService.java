@@ -91,4 +91,5 @@ public class UsersService {
         }
         return objectMapper.convertValue(user, UserFullDTO.class);
     }
+
 }

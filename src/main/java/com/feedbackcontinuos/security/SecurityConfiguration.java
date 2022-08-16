@@ -46,6 +46,7 @@ public class SecurityConfiguration {
                 "/users/login",
                 "/users/create",
                 "/users/update-file",
+                "/feedback/**",
                 "/");
     }
 

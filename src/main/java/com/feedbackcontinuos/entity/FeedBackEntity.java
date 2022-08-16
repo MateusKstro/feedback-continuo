@@ -20,7 +20,7 @@ public class FeedBackEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FEEDBACK_SEQ")
     @SequenceGenerator(name = "FEEDBACK_SEQ", sequenceName = "seq_feedback", allocationSize = 1)
     @Column(name = "id_feedback")
-    private Integer idUser;
+    private Integer idFeedback;
 
     @Column(name = "message")
     private String message;

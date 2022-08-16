@@ -25,7 +25,7 @@ public class UsersEntity implements UserDetails {
     @Column(name = "id_access", insertable = false, updatable = false)
     private Integer userAcess;
     @Column(name = "user_name")
-    private String userNamer;
+    private String userName;
     @Column(name = "user_role")
     private String userRole;
     @Column(name = "email")
