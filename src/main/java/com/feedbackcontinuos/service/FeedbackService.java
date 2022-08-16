@@ -77,7 +77,7 @@ public class FeedbackService {
 
         Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "dataEHora");
 
-        return feedbackRepository.findByFeedbackUserId(pageable, user.getIdUser())
+        return feedbackRepository.findByUserId(pageable, user.getIdUser())
                 .map(feedBackEntity -> {
                     try{
                         UsersEntity gived = usersService.findById(feedBackEntity.getFeedbackUserId());

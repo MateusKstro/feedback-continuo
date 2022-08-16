@@ -11,5 +11,5 @@ public interface FeedbackRepository extends JpaRepository <FeedBackEntity, Integ
 
     Page<FeedBackEntity> findByFeedbackUserId(Pageable pageable, Integer id);
 
-
+    Page<FeedBackEntity> findByUserId(Pageable pageable, Integer id);
 }
