@@ -65,6 +65,11 @@ public class UsersService {
                 .toList();
     }
 
+    public void delete(Integer id) throws RegraDeNegocioException {
+        UsersEntity user = findById(id);
+        usersRepository.delete(user);
+    }
+
     public Optional<UsersEntity> findByEmail(String email) {
         return usersRepository.findByEmail(email);
     }

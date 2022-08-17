@@ -86,15 +86,23 @@ public class UsersController {
 
     @Operation(summary = "Recuperar o usuário logado", description = "Retorna o usuário logado")
     @ApiResponse(responseCode = "200", description = "Retorna o usuário logado")
-    @GetMapping("/recuperar-usuario-logado")
+    @GetMapping("/recover-logged-user")
     public UserFullDTO getLoggedUser() throws RegraDeNegocioException {
         return usersService.getById();
     }
 
     @Operation(summary = "Retornar usuário por id", description = "Retorna o usuário pelo id")
     @ApiResponse(responseCode = "200", description = "Retorna o usuário pelo id")
-    @GetMapping("/retornar-usuario")
+    @GetMapping("/recover-user")
     public UserFullDTO getIdUser(Integer id) throws RegraDeNegocioException {
         return usersService.getByIdUser(id);
     }
+
+    @Operation(summary = "Deletar usuário por id", description = "Deleta o usuário pelo id")
+    @ApiResponse(responseCode = "200", description = "Deleta o usuário pelo id")
+    @DeleteMapping("/delete-user")
+    public void delete(Integer id) throws RegraDeNegocioException {
+        usersService.delete(id);
+    }
+
 }

@@ -31,9 +31,10 @@ public class SecurityConfiguration {
                         authz
 
                                 .antMatchers("/users/list-all").hasRole("USER")
-                                .antMatchers("/users/recuperar-usuario-logado").hasRole("USER")
-                                .antMatchers("/user/retornar-usuario").hasRole("USER")
+                                .antMatchers("/users/recover-logged-user").hasRole("USER")
+                                .antMatchers("/user/recover-user").hasRole("USER")
                                 .antMatchers(HttpMethod.POST, "/feedback").hasRole("USER")
+                                .antMatchers(HttpMethod.DELETE, "/users").hasRole("USER")
                                 .anyRequest().authenticated()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
