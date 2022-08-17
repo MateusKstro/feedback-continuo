@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.feedbackcontinuos.dto.UserFullDTO;
 import com.feedbackcontinuos.dto.UsersCreateDTO;
 import com.feedbackcontinuos.dto.UsersDTO;
 import com.feedbackcontinuos.entity.AccessEntity;
@@ -22,12 +23,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -76,7 +77,7 @@ public class UsersServiceTest {
     }
 
     @Test
-    public void deveTestarListAllComSucesso() throws RegraDeNegocioException {
+    public void deveTestarFindAllComSucesso() throws RegraDeNegocioException {
         UsersEntity usersEntity = getUsersEntity();
 
         List<UsersEntity> usersEntities = List.of(usersEntity);
@@ -88,6 +89,45 @@ public class UsersServiceTest {
         usersService.findAll();
 
         assertNotNull(usersEntities);
+    }
+
+    @Test
+    public void deveTestarFindByEmailComSucesso(){
+        UsersEntity usersEntity = getUsersEntity();
+
+        when(usersRepository.findByEmail(anyString())).thenReturn(Optional.of(usersEntity));
+
+        usersService.findByEmail(anyString());
+
+        assertNotNull(usersEntity);
+    }
+
+    @Test
+    public void deveTestarGetById() throws RegraDeNegocioException {
+        UsersEntity usersEntity = getUsersEntity();
+        usersEntity.setAvatar(new byte[]{0,1,2});
+
+        criarUsuarioLogado();
+
+        when(usersRepository.findById(anyInt())).thenReturn(Optional.of(usersEntity));
+
+        usersEntity.setAvatar(Base64.getEncoder().encode(usersEntity.getAvatar()));
+
+        usersService.getById();
+
+        assertNotNull(usersEntity);
+    }
+
+    @Test
+    public void deveTestarGetByIdUser() throws RegraDeNegocioException {
+        UsersEntity usersEntity = getUsersEntity();
+        usersEntity.setAvatar(new byte[]{0,1,2});
+
+        when(usersRepository.findById(anyInt())).thenReturn(Optional.of(usersEntity));
+
+        usersService.getByIdUser(anyInt());
+
+        assertNotNull(usersEntity);
     }
 
     private static AccessEntity getAccessEntity(){

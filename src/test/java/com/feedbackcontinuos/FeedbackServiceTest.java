@@ -1,8 +1,8 @@
-package com.feedbackcontinuos;
-
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
-
-@RunWith(MockitoJUnitRunner.class)
-public class FeedbackServiceTest {
-}
+//package com.feedbackcontinuos;
+//
+//import org.junit.runner.RunWith;
+//import org.mockito.junit.MockitoJUnitRunner;
+//
+//@RunWith(MockitoJUnitRunner.class)
+//public class FeedbackServiceTest {
+//}
