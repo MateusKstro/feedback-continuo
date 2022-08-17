@@ -1,5 +1,6 @@
 package com.feedbackcontinuos.dto;
 
+import com.feedbackcontinuos.entity.TagEntity;
 import com.feedbackcontinuos.enums.Tags;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -27,5 +28,5 @@ public class FeedbackCreateDTO {
 
     @NotEmpty
     @Schema(description = "Lista de tags")
-    private List<Tags> tagsList;
+    private List<TagDTO> tagsList;
 }

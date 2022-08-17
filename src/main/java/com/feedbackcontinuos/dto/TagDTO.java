@@ -6,9 +6,6 @@ import lombok.Data;
 @Data
 public class TagDTO {
 
-    @Schema(description = "Id da tag")
-    private Integer idTag;
-
     @Schema(description = "nome da tag")
     private String name;
 }
