@@ -29,15 +29,19 @@ public class UsersService {
     private final AccessEntity accessEntity =
             new AccessEntity(1, "ROLE_USER", null);
 
-    public UsersDTO create(UsersCreateDTO usersCreateDTO) {
-        UsersEntity user = objectMapper.convertValue(usersCreateDTO, UsersEntity.class);
-        user.setAccessEntity(accessEntity);
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String senhaCrypt = passwordEncoder.encode(usersCreateDTO.getUserPassword());
-        user.setUserPassword(senhaCrypt);
-        user.setUserRole(usersCreateDTO.getUserRole().getDescription());
-        usersRepository.save(user);
-        return objectMapper.convertValue(user, UsersDTO.class);
+    public UsersDTO create(UsersCreateDTO usersCreateDTO) throws RegraDeNegocioException {
+        if (usersRepository.existsByEmail(usersCreateDTO.getEmail())){
+            throw new RegraDeNegocioException("Usuário já possui cadastro no sistema");
+        } else {
+            UsersEntity user = objectMapper.convertValue(usersCreateDTO, UsersEntity.class);
+            user.setAccessEntity(accessEntity);
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String senhaCrypt = passwordEncoder.encode(usersCreateDTO.getUserPassword());
+            user.setUserPassword(senhaCrypt);
+            user.setUserRole(usersCreateDTO.getUserRole().getDescription());
+            usersRepository.save(user);
+            return objectMapper.convertValue(user, UsersDTO.class);
+        }
     }
 
     public void uploadFile(Integer id, Optional<MultipartFile> file) throws RegraDeNegocioException, IOException {

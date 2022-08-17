@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class UserWithNameAndAvatarDTO {
 
+    @Schema(description = "Id do Usuário")
+    private Integer idUser;
     @Schema(description = "Nome do Usuário")
     private String name;
     @Schema(description = "Cargo do Usuário")

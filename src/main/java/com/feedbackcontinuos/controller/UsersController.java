@@ -62,7 +62,7 @@ public class UsersController {
     @Operation(summary = "Criar um usuário novo", description = "Cria um usuário")
     @ApiResponse(responseCode = "200", description = "Cria um usuário")
     @PostMapping(value = "/create")
-    public ResponseEntity<UsersDTO> post(@RequestBody @Valid UsersCreateDTO usersCreateDTO) {
+    public ResponseEntity<UsersDTO> post(@RequestBody @Valid UsersCreateDTO usersCreateDTO) throws RegraDeNegocioException {
         return new ResponseEntity<>(usersService.create(usersCreateDTO), HttpStatus.OK);
     }
 
