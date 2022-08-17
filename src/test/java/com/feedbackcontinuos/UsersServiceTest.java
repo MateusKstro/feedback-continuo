@@ -52,7 +52,7 @@ public class UsersServiceTest {
     }
 
     @Test
-    public void deveTestarCriarUsuarioComSucesso(){
+    public void deveTestarCriarUsuarioComSucesso() throws RegraDeNegocioException {
         UsersEntity usersEntity = getUsersEntity();
 
         when(usersRepository.save(any(UsersEntity.class))).thenReturn(usersEntity);
