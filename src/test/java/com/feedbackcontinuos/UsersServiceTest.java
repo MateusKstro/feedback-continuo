@@ -105,13 +105,11 @@ public class UsersServiceTest {
     @Test
     public void deveTestarGetById() throws RegraDeNegocioException {
         UsersEntity usersEntity = getUsersEntity();
-        usersEntity.setAvatar(new byte[]{0,1,2});
 
         criarUsuarioLogado();
 
         when(usersRepository.findById(anyInt())).thenReturn(Optional.of(usersEntity));
 
-        usersEntity.setAvatar(Base64.getEncoder().encode(usersEntity.getAvatar()));
 
         usersService.getById();
 
@@ -121,7 +119,6 @@ public class UsersServiceTest {
     @Test
     public void deveTestarGetByIdUser() throws RegraDeNegocioException {
         UsersEntity usersEntity = getUsersEntity();
-        usersEntity.setAvatar(new byte[]{0,1,2});
 
         when(usersRepository.findById(anyInt())).thenReturn(Optional.of(usersEntity));
 
