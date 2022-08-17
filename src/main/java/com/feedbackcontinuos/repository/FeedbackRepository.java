@@ -1,4 +1,4 @@
-package com.feedbackcontinuos.exceptions.repository;
+package com.feedbackcontinuos.repository;
 
 import com.feedbackcontinuos.entity.FeedBackEntity;
 import org.springframework.data.domain.Page;

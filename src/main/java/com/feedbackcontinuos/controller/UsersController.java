@@ -10,7 +10,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -43,7 +45,7 @@ public class UsersController {
     @Operation(summary = "Gerar um token para acesso ao sistema", description = "Retorna um token válido")
     @ApiResponse(responseCode = "200", description = "Retorna um token válido")
     @PostMapping("/login")
-    public String auth(@RequestBody @Valid LoginDTO login) {
+    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO login) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         login.getLogin(),
@@ -54,34 +56,41 @@ public class UsersController {
         log.info("Autenticado com sucesso!");
         Object usuarioLogado = authentication.getPrincipal();
         UsersEntity usuario = (UsersEntity) usuarioLogado;
-        return tokenService.getToken(usuario);
+        return new ResponseEntity<>(tokenService.getToken(usuario), HttpStatus.OK);
     }
+
     @Operation(summary = "Criar um usuário novo", description = "Cria um usuário")
     @ApiResponse(responseCode = "200", description = "Cria um usuário")
     @PostMapping(value = "/create")
-    public UsersDTO post(@RequestBody @Valid UsersCreateDTO usersCreateDTO){
-        return usersService.create(usersCreateDTO);
+    public ResponseEntity<UsersDTO> post(@RequestBody @Valid UsersCreateDTO usersCreateDTO) {
+        return new ResponseEntity<>(usersService.create(usersCreateDTO), HttpStatus.OK);
     }
+
     @Operation(summary = "Fazer o upload de uma foto de perfil para o usuário", description = "Upload de foto de perfil")
     @ApiResponse(responseCode = "200", description = "Upload de foto de perfil")
     @PutMapping(value = "/update-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void update(@RequestPart("id") String id,
-                       @RequestPart(value = "file", required = false) Optional<MultipartFile> file) throws RegraDeNegocioException, IOException {
+    public ResponseEntity<Void> update(@RequestPart("id") String id,
+                                       @RequestPart(value = "file", required = false) Optional<MultipartFile> file)
+            throws RegraDeNegocioException, IOException {
         Integer idUser = Integer.valueOf(id);
         usersService.uploadFile(idUser, file);
+        return ResponseEntity.ok().build();
     }
+
     @Operation(summary = "Listar todos os usuários, exceto o que está logado", description = "Lista todos os usuários, exceto o logado")
     @ApiResponse(responseCode = "200", description = "Lista todos os usuários, exceto o logado")
     @GetMapping("/list-all")
-    public List<UserWithNameAndAvatarDTO> getAll() throws RegraDeNegocioException {
-        return usersService.findAll();
+    public ResponseEntity<List<UserWithNameAndAvatarDTO>> getAll() throws RegraDeNegocioException {
+        return new ResponseEntity<>(usersService.findAll(), HttpStatus.OK);
     }
+
     @Operation(summary = "Recuperar o usuário logado", description = "Retorna o usuário logado")
     @ApiResponse(responseCode = "200", description = "Retorna o usuário logado")
     @GetMapping("/recuperar-usuario-logado")
     public UserFullDTO getLoggedUser() throws RegraDeNegocioException {
         return usersService.getById();
     }
+
     @Operation(summary = "Retornar usuário por id", description = "Retorna o usuário pelo id")
     @ApiResponse(responseCode = "200", description = "Retorna o usuário pelo id")
     @GetMapping("/retornar-usuario")

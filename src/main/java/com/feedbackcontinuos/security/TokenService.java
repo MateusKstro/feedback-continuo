@@ -18,8 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TokenService {
 
-    private final UsersService usersService;
-
     @Value("${jwt.secret}")
     private String secret;
 

@@ -7,7 +7,7 @@ import com.feedbackcontinuos.entity.FeedBackEntity;
 import com.feedbackcontinuos.entity.TagEntity;
 import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
-import com.feedbackcontinuos.exceptions.repository.FeedbackRepository;
+import com.feedbackcontinuos.repository.FeedbackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

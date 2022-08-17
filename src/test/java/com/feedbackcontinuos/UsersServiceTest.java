@@ -9,7 +9,8 @@ import com.feedbackcontinuos.dto.UsersDTO;
 import com.feedbackcontinuos.entity.AccessEntity;
 import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.enums.Role;
-import com.feedbackcontinuos.exceptions.repository.UsersRepository;
+import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
+import com.feedbackcontinuos.repository.UsersRepository;
 import com.feedbackcontinuos.service.UsersService;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,11 +18,16 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -56,8 +62,33 @@ public class UsersServiceTest {
         assertNull(usersDTO.getIdUser());
     }
 
+    @Test
+    public void deveTestarBuscarUsuarioPeloIdComSucesso() throws RegraDeNegocioException {
+        UsersEntity usersEntity = getUsersEntity();
 
+        when(usersRepository.findById(anyInt())).thenReturn(Optional.of(usersEntity));
 
+        UsersEntity usersEntity1 = usersService.findById(anyInt());
+
+        assertNotNull(usersEntity1);
+        assertEquals(usersEntity.getUsername(), usersEntity1.getUsername());
+        assertEquals(usersEntity.getUserRole(), usersEntity1.getUserRole());
+    }
+
+    @Test
+    public void deveTestarListAllComSucesso() throws RegraDeNegocioException {
+        UsersEntity usersEntity = getUsersEntity();
+
+        List<UsersEntity> usersEntities = List.of(usersEntity);
+
+        criarUsuarioLogado();
+
+        when(usersRepository.findById(anyInt())).thenReturn(Optional.of(usersEntity));
+
+        usersService.findAll();
+
+        assertNotNull(usersEntities);
+    }
 
     private static AccessEntity getAccessEntity(){
         AccessEntity accessEntity = new AccessEntity();
@@ -71,7 +102,7 @@ public class UsersServiceTest {
         UsersEntity usersEntity = new UsersEntity();
         usersEntity.setIdUser(1);
         usersEntity.setAccessEntity(getAccessEntity());
-        usersEntity.setUserName("Bruno Rodrigues");
+        usersEntity.setName("Bruno Rodrigues");
         usersEntity.setUserRole("Desenvolvedor de Software");
         usersEntity.setEmail("bruno.rodrigues@dbccompany.com.br");
         usersEntity.setUserPassword("abc@123");
@@ -80,10 +111,20 @@ public class UsersServiceTest {
     }
     private static UsersCreateDTO getUsersCreateDTO(){
         UsersCreateDTO usersCreateDTO = new UsersCreateDTO();
-        usersCreateDTO.setUserName("Bruno Rodrigues");
+        usersCreateDTO.setName("Bruno Rodrigues");
         usersCreateDTO.setUserRole(Role.DESENVOLVEDOR_DE_SOFTWARE);
         usersCreateDTO.setEmail("bruno.rodrigues@dbccompany.com.br");
         usersCreateDTO.setUserPassword("abc@123");
         return usersCreateDTO;
+    }
+
+    private void criarUsuarioLogado() {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(
+                        123,
+                        null
+                );
+
+        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
     }
 }

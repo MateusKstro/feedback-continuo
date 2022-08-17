@@ -9,7 +9,7 @@ public class UserFullDTO {
     @Schema(description = "Id do Usuário")
     private Integer idUser;
     @Schema(description = "Nome do Usuário")
-    private String userNamer;
+    private String name;
     @Schema(description = "Cargo do Usuário")
     private String userRole;
     @Schema(description = "Email do Usuário")

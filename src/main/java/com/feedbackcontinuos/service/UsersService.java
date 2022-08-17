@@ -8,7 +8,7 @@ import com.feedbackcontinuos.dto.UsersDTO;
 import com.feedbackcontinuos.entity.AccessEntity;
 import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
-import com.feedbackcontinuos.exceptions.repository.UsersRepository;
+import com.feedbackcontinuos.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,7 +26,7 @@ public class UsersService {
 
     private final UsersRepository usersRepository;
     private final ObjectMapper objectMapper;
-    private AccessEntity accessEntity =
+    private final AccessEntity accessEntity =
             new AccessEntity(1, "ROLE_USER", null);
 
     public UsersDTO create(UsersCreateDTO usersCreateDTO) {
@@ -53,12 +53,8 @@ public class UsersService {
         List<UsersEntity> users = usersRepository.findAll();
         users.remove(getLoggedUser());
         return users.stream()
-                .map(usersEntity -> {
-                    if (usersEntity.getAvatar() != null) {
-                        usersEntity.setAvatar(Base64.getEncoder().encode(usersEntity.getAvatar()));
-                    }
-                    return usersEntity;
-                }).map(usersEntity -> objectMapper.convertValue(usersEntity, UserWithNameAndAvatarDTO.class))
+                .map(this::getUsersEntity)
+                .map(usersEntity -> objectMapper.convertValue(usersEntity, UserWithNameAndAvatarDTO.class))
                 .toList();
     }
 
@@ -82,17 +78,20 @@ public class UsersService {
 
     public UserFullDTO getById() throws RegraDeNegocioException {
         UsersEntity user = getLoggedUser();
-        if (user.getAvatar() != null){
-            user.setAvatar(Base64.getEncoder().encode(user.getAvatar()));
-        }
-        return objectMapper.convertValue(user, UserFullDTO.class);
-    }
-    public UserFullDTO getByIdUser(Integer id) throws RegraDeNegocioException {
-        UsersEntity user = findById(id);
-        if (user.getAvatar() != null){
-            user.setAvatar(Base64.getEncoder().encode(user.getAvatar()));
-        }
+        getUsersEntity(user);
         return objectMapper.convertValue(user, UserFullDTO.class);
     }
 
+    public UserFullDTO getByIdUser(Integer id) throws RegraDeNegocioException {
+        UsersEntity user = findById(id);
+        getUsersEntity(user);
+        return objectMapper.convertValue(user, UserFullDTO.class);
+    }
+
+    private UsersEntity getUsersEntity(UsersEntity usersEntity) {
+        if (usersEntity.getAvatar() != null) {
+            usersEntity.setAvatar(Base64.getEncoder().encode(usersEntity.getAvatar()));
+        }
+        return usersEntity;
+    }
 }

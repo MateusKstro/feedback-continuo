@@ -1,4 +1,4 @@
-package com.feedbackcontinuos.exceptions.repository;
+package com.feedbackcontinuos.repository;
 
 import com.feedbackcontinuos.entity.TagEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

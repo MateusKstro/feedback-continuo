@@ -2,7 +2,6 @@ package com.feedbackcontinuos.controller;
 
 import com.feedbackcontinuos.dto.FeedbackCompletoDTO;
 import com.feedbackcontinuos.dto.FeedbackCreateDTO;
-import com.feedbackcontinuos.dto.FeedbackDTO;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.service.FeedbackService;
 import lombok.RequiredArgsConstructor;
