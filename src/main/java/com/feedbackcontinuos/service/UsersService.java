@@ -44,16 +44,19 @@ public class UsersService {
         if (file.isPresent()){
             UsersEntity user = findById(id);
             byte[] byteArray = file.get().getBytes();
-            user.setAvatar(byteArray);
+            user.setAvatar(Base64.getEncoder().encodeToString(byteArray));
             usersRepository.save(user);
         }
     }
+
+//    public void UpdatePassword(String email){
+//        Optional<UsersEntity> user = fi
+//    }
 
     public List<UserWithNameAndAvatarDTO> findAll() throws RegraDeNegocioException {
         List<UsersEntity> users = usersRepository.findAll();
         users.remove(getLoggedUser());
         return users.stream()
-                .map(this::getUsersEntity)
                 .map(usersEntity -> objectMapper.convertValue(usersEntity, UserWithNameAndAvatarDTO.class))
                 .toList();
     }
@@ -78,20 +81,11 @@ public class UsersService {
 
     public UserFullDTO getById() throws RegraDeNegocioException {
         UsersEntity user = getLoggedUser();
-        getUsersEntity(user);
         return objectMapper.convertValue(user, UserFullDTO.class);
     }
 
     public UserFullDTO getByIdUser(Integer id) throws RegraDeNegocioException {
         UsersEntity user = findById(id);
-        getUsersEntity(user);
         return objectMapper.convertValue(user, UserFullDTO.class);
-    }
-
-    private UsersEntity getUsersEntity(UsersEntity usersEntity) {
-        if (usersEntity.getAvatar() != null) {
-            usersEntity.setAvatar(Base64.getEncoder().encode(usersEntity.getAvatar()));
-        }
-        return usersEntity;
     }
 }

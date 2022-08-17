@@ -2,6 +2,7 @@ package com.feedbackcontinuos.controller;
 
 import com.feedbackcontinuos.dto.FeedbackCompletoDTO;
 import com.feedbackcontinuos.dto.FeedbackCreateDTO;
+import com.feedbackcontinuos.dto.PageDTO;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.service.FeedbackService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class FeedbackController {
     }
 
     @GetMapping("/gived")
-    public ResponseEntity<Page<FeedbackCompletoDTO>> getGivenFeedback(@RequestParam Integer page) throws RegraDeNegocioException{
+    public ResponseEntity<PageDTO<FeedbackCompletoDTO>> getGivenFeedback(@RequestParam Integer page) throws RegraDeNegocioException{
         return ResponseEntity.ok(feedbackService.getGivedFeedbacks(page));
     }
 

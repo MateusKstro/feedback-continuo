@@ -3,6 +3,7 @@ package com.feedbackcontinuos.service;
 
 import com.feedbackcontinuos.dto.FeedbackCompletoDTO;
 import com.feedbackcontinuos.dto.FeedbackCreateDTO;
+import com.feedbackcontinuos.dto.PageDTO;
 import com.feedbackcontinuos.entity.FeedBackEntity;
 import com.feedbackcontinuos.entity.TagEntity;
 import com.feedbackcontinuos.entity.UsersEntity;
@@ -53,7 +54,7 @@ public class FeedbackService {
                         if(receveid.getAvatar() == null){
                             avatar = null;
                         } else {
-                            avatar = Base64.getEncoder().encodeToString(receveid.getAvatar());
+                            avatar = receveid.getAvatar();
                         }
 
                         return FeedbackCompletoDTO.builder()
@@ -70,12 +71,12 @@ public class FeedbackService {
                 });
     }
 
-    public Page<FeedbackCompletoDTO> getGivedFeedbacks(Integer page) throws RegraDeNegocioException {
+    public PageDTO<FeedbackCompletoDTO> getGivedFeedbacks(Integer page) throws RegraDeNegocioException {
         UsersEntity user = usersService.getLoggedUser();
 
         Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "dataEHora");
 
-        return feedbackRepository.findByUserId(pageable, user.getIdUser())
+        Page<FeedbackCompletoDTO> pagina = feedbackRepository.findByUserId(pageable, user.getIdUser())
                 .map(feedBackEntity -> {
                     try{
                         UsersEntity gived = usersService.findById(feedBackEntity.getFeedbackUserId());
@@ -83,7 +84,7 @@ public class FeedbackService {
                         return FeedbackCompletoDTO.builder()
                                 .feedbackId(feedBackEntity.getIdFeedback())
                                 .userName(gived.getUsername())
-                                .avatar(gived.getAvatar() == null ? null :Base64.getEncoder().encodeToString(gived.getAvatar()))
+                                .avatar(gived.getAvatar() == null ? null :gived.getAvatar())
                                 .message(feedBackEntity.getMessage())
                                 .tags(getTags(feedBackEntity.getTagEntities()))
                                 .dataEHora(feedBackEntity.getDataEHora())
@@ -92,6 +93,8 @@ public class FeedbackService {
                         throw new RuntimeException(e);
                     }
                 });
+        List<FeedbackCompletoDTO> feedbacks = pagina.getContent();
+        return new PageDTO<>(pagina.getTotalElements(), pagina.getTotalPages(), page, 3, feedbacks);
     }
 
 

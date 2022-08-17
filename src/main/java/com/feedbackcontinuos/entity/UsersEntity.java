@@ -32,8 +32,9 @@ public class UsersEntity implements UserDetails {
     private String email;
     @Column(name = "user_password")
     private String userPassword;
+
     @Column(name = "avatar")
-    private byte[] avatar;
+    private String avatar;
 
     @JsonIgnore
     @OneToMany(mappedBy = "feedbackEntityGiven", cascade = CascadeType.ALL, orphanRemoval = true)
