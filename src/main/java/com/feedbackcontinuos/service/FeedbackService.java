@@ -40,12 +40,12 @@ public class FeedbackService {
     }
 
 
-    public Page<FeedbackCompletoDTO> getReceivedFeedbacks(Integer page) throws RegraDeNegocioException {
+    public PageDTO<FeedbackCompletoDTO> getReceivedFeedbacks(Integer page) throws RegraDeNegocioException {
         UsersEntity usersEntity = usersService.getLoggedUser();
 
         Pageable pageable = PageRequest.of(page,3, Sort.Direction.DESC, "dataEHora");
 
-        return feedbackRepository.findByFeedbackUserId(pageable, usersEntity.getIdUser())
+        Page<FeedbackCompletoDTO> pagina = feedbackRepository.findByFeedbackUserId(pageable, usersEntity.getIdUser())
                 .map(feedBackEntity -> {
                     try{
                         UsersEntity receveid = usersService.findById(feedBackEntity.getUserId());
@@ -69,6 +69,8 @@ public class FeedbackService {
                         throw new RuntimeException(e);
                     }
                 });
+        List<FeedbackCompletoDTO> feedbacks = pagina.getContent();
+        return new PageDTO<>(pagina.getTotalElements(), pagina.getTotalPages(), page, 3, feedbacks);
     }
 
     public PageDTO<FeedbackCompletoDTO> getGivedFeedbacks(Integer page) throws RegraDeNegocioException {

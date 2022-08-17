@@ -26,7 +26,7 @@ public class FeedbackController {
 
 
     @GetMapping("/receveid")
-    public ResponseEntity<Page<FeedbackCompletoDTO>> getReceveidFeedback(@RequestParam Integer page) throws RegraDeNegocioException {
+    public ResponseEntity<PageDTO<FeedbackCompletoDTO>> getReceveidFeedback(@RequestParam Integer page) throws RegraDeNegocioException {
         return ResponseEntity.ok(feedbackService.getReceivedFeedbacks(page));
     }
 
