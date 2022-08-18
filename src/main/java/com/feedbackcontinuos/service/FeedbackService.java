@@ -30,11 +30,13 @@ public class FeedbackService {
     private final FeedBackRepository feedbackRepository;
     private final ObjectMapper objectMapper;
 
-    //test
     public void create(FeedbackCreateDTO createDTO) throws RegraDeNegocioException {
         UsersEntity userSend = usersService.getLoggedUser();
         UsersEntity userRecived = usersService.findById(createDTO.getFeedbackUserId());
         FeedBackEntity feedBack = objectMapper.convertValue(createDTO, FeedBackEntity.class);
+        List<TagEntity> tags = createDTO.getTagsList().stream()
+                .map(tagCreateDTO -> objectMapper.convertValue(tagCreateDTO, TagEntity.class))
+                .toList();
         feedBack.setFeedbackEntityGiven(userSend);
         feedBack.setFeedbackEntityReceived(userRecived);
         feedBack.setDataEHora(LocalDateTime.now(ZoneId.systemDefault()));
@@ -45,6 +47,7 @@ public class FeedbackService {
                 tagsService.tagCreate(tag);
             }
         }
+        feedBack.setTagsList(tags);
         feedbackRepository.save(feedBack);
     }
 
@@ -55,11 +58,7 @@ public class FeedbackService {
         Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "dataEHora");
 
         Page<FeedBackEntity> pagina = feedbackRepository.findByFeedbackUserId(pageable, usersEntity.getIdUser());
-
-        List<FeedbackDTO> feedbacks = pagina.getContent().stream()
-                .map(feedBackEntity -> objectMapper.convertValue(feedBackEntity, FeedbackDTO.class))
-                .toList();
-        return new PageDTO<>(pagina.getTotalElements(), pagina.getTotalPages(), page, 3, feedbacks);
+        return getFeedbackDTOPageDTO(page, pagina);
     }
 
     public PageDTO<FeedbackDTO> getGivedFeedbacks(Integer page) throws RegraDeNegocioException {
@@ -68,14 +67,40 @@ public class FeedbackService {
         Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "dataEHora");
 
         Page<FeedBackEntity> pagina = feedbackRepository.findByUserId(pageable, usersEntity.getIdUser());
+        return getFeedbackDTOPageDTO(page, pagina);
+    }
 
+    public PageDTO<FeedbackDTO> getReceivedFeedbacksIdUser(Integer page, Integer id) throws RegraDeNegocioException {
+        UsersEntity usersEntity = usersService.findById(id);
+
+        Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "dataEHora");
+
+        Page<FeedBackEntity> pagina = feedbackRepository.findByFeedbackUserId(pageable, usersEntity.getIdUser());
+
+        return getFeedbackDTOPageDTO(page, pagina);
+    }
+
+    public PageDTO<FeedbackDTO> getGivedFeedbacksIdUser(Integer page, Integer id) throws RegraDeNegocioException {
+        UsersEntity usersEntity = usersService.findById(id);
+
+        Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "dataEHora");
+
+        Page<FeedBackEntity> pagina = feedbackRepository.findByUserId(pageable, usersEntity.getIdUser());
+
+        return getFeedbackDTOPageDTO(page, pagina);
+    }
+
+    private PageDTO<FeedbackDTO> getFeedbackDTOPageDTO(Integer page, Page<FeedBackEntity> pagina) {
         List<FeedbackDTO> feedbacks = pagina.getContent().stream()
-                .map(feedBackEntity -> objectMapper.convertValue(feedBackEntity, FeedbackDTO.class))
+                .map(feedBackEntity -> {
+                    FeedbackDTO feedbackDTO = objectMapper.convertValue(feedBackEntity, FeedbackDTO.class);
+                    feedbackDTO.setTagsList(feedBackEntity.getTagsList().stream()
+                            .map(tagEntity -> objectMapper.convertValue(tagEntity, TagCreateDTO.class))
+                            .toList());
+                    return feedbackDTO;
+                })
                 .toList();
         return new PageDTO<>(pagina.getTotalElements(), pagina.getTotalPages(), page, 3, feedbacks);
     }
-
-
-
 }
 

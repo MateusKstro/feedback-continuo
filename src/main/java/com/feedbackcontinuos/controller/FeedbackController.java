@@ -36,4 +36,14 @@ public class FeedbackController {
         return ResponseEntity.ok(feedbackService.getGivedFeedbacks(page));
     }
 
+    @GetMapping("/receveid-por-id")
+    public ResponseEntity<PageDTO<FeedbackDTO>> getReceveIdFeedbackIdUser(@RequestParam Integer page, Integer id) throws RegraDeNegocioException {
+        return ResponseEntity.ok(feedbackService.getReceivedFeedbacksIdUser(page, id));
+    }
+
+    @GetMapping("/gived-por-id")
+    public ResponseEntity<PageDTO<FeedbackDTO>> getGivenFeedbackIdUser(@RequestParam Integer page, Integer id) throws RegraDeNegocioException{
+        return ResponseEntity.ok(feedbackService.getGivedFeedbacksIdUser(page, id));
+    }
+
 }
