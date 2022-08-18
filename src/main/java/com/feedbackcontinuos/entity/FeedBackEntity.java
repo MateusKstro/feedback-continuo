@@ -49,9 +49,8 @@ public class FeedBackEntity {
     @JoinColumn(name = "feedback_id_user")
     private UsersEntity feedbackEntityReceived;
 
-
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "feedback_tags",
             joinColumns = @JoinColumn(name = "id_feedback"),
             inverseJoinColumns = @JoinColumn(name = "id_tag"))

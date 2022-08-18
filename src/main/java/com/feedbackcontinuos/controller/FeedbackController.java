@@ -1,6 +1,5 @@
 package com.feedbackcontinuos.controller;
 
-import com.feedbackcontinuos.dto.FeedbackCompletoDTO;
 import com.feedbackcontinuos.dto.FeedbackCreateDTO;
 import com.feedbackcontinuos.dto.FeedbackDTO;
 import com.feedbackcontinuos.dto.PageDTO;
@@ -8,7 +7,6 @@ import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.service.FeedbackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

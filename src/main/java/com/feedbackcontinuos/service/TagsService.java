@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feedbackcontinuos.dto.TagCreateDTO;
 import com.feedbackcontinuos.dto.TagDTO;
 import com.feedbackcontinuos.entity.TagEntity;
-import com.feedbackcontinuos.enums.Tags;
 import com.feedbackcontinuos.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,18 +25,11 @@ public class TagsService {
                 .map(tagEntity -> objectMapper.convertValue(tagEntity, TagDTO.class))
                 .toList();
     }
-
-    public void tagCreate(TagCreateDTO tag){
-        TagEntity tagEntity = objectMapper.convertValue(tag, TagEntity.class);
-        tagRepository.save(tagEntity);
-    }
-
-
-    public boolean existsByName(String name){
-        if(tagRepository.existsByName(name)){
-            return true;
-        } else {
-            return false;
+    public TagEntity tagCreate(TagCreateDTO tag) {
+        Optional<TagEntity> buscar = tagRepository.findByName(tag.getName().toUpperCase().replace(" ", "_"));
+        if (buscar.isEmpty()) {
+            return tagRepository.save(TagEntity.builder().name(tag.getName().toUpperCase().replace(" ", "_")).build());
         }
+        return buscar.get();
     }
 }

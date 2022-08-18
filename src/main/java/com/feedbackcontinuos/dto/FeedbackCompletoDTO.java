@@ -30,7 +30,7 @@ public class FeedbackCompletoDTO {
     private Integer idUserRecevid;
 
     @Schema(description = "Lista de tags")
-    private List<TagDTO> tags;
+    private List<TagCreateDTO> tagsList;
 
     @Schema(description = "Data de criacao")
     private LocalDateTime dataEHora;
