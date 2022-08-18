@@ -17,15 +17,18 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class FeedbackService {
 
     private final UsersService usersService;
+
     private final TagsService tagsService;
+
     private final FeedBackRepository feedbackRepository;
+
     private final ObjectMapper objectMapper;
 
     //test
@@ -41,7 +44,6 @@ public class FeedbackService {
         feedBack.setDataEHora(LocalDateTime.now(ZoneId.systemDefault()));
         for (TagCreateDTO tag : createDTO.getTagsList()) {
             if (tagsService.existsByName(tag.getName())) {
-                tags.remove(tag);
                 break;
             } else {
                 tagsService.tagCreate(tag);
@@ -51,17 +53,42 @@ public class FeedbackService {
         feedbackRepository.save(feedBack);
     }
 
+
     public PageDTO<FeedbackDTO> getReceivedFeedbacks(Integer page) throws RegraDeNegocioException {
         UsersEntity usersEntity = usersService.getLoggedUser();
+
         Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "dataEHora");
+
         Page<FeedBackEntity> pagina = feedbackRepository.findByFeedbackUserId(pageable, usersEntity.getIdUser());
         return getFeedbackDTOPageDTO(page, pagina);
     }
 
     public PageDTO<FeedbackDTO> getGivedFeedbacks(Integer page) throws RegraDeNegocioException {
         UsersEntity usersEntity = usersService.getLoggedUser();
+
         Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "dataEHora");
+
         Page<FeedBackEntity> pagina = feedbackRepository.findByUserId(pageable, usersEntity.getIdUser());
+        return getFeedbackDTOPageDTO(page, pagina);
+    }
+
+    public PageDTO<FeedbackDTO> getReceivedFeedbacksIdUser(Integer page, Integer id) throws RegraDeNegocioException {
+        UsersEntity usersEntity = usersService.findById(id);
+
+        Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "dataEHora");
+
+        Page<FeedBackEntity> pagina = feedbackRepository.findByFeedbackUserId(pageable, usersEntity.getIdUser());
+
+        return getFeedbackDTOPageDTO(page, pagina);
+    }
+
+    public PageDTO<FeedbackDTO> getGivedFeedbacksIdUser(Integer page, Integer id) throws RegraDeNegocioException {
+        UsersEntity usersEntity = usersService.findById(id);
+
+        Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "dataEHora");
+
+        Page<FeedBackEntity> pagina = feedbackRepository.findByUserId(pageable, usersEntity.getIdUser());
+
         return getFeedbackDTOPageDTO(page, pagina);
     }
 
@@ -78,4 +105,6 @@ public class FeedbackService {
         return new PageDTO<>(pagina.getTotalElements(), pagina.getTotalPages(), page, 3, feedbacks);
     }
 }
+
+
 
