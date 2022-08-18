@@ -1,9 +1,6 @@
 package com.feedbackcontinuos.controller;
 
-import com.feedbackcontinuos.dto.FeedbackCompletoDTO;
-import com.feedbackcontinuos.dto.FeedbackCreateDTO;
-import com.feedbackcontinuos.dto.FeedbackDTO;
-import com.feedbackcontinuos.dto.PageDTO;
+import com.feedbackcontinuos.dto.*;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.service.FeedbackService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +16,6 @@ public class FeedbackController {
 
     @Autowired
     private  FeedbackService feedbackService;
-
 
 
 

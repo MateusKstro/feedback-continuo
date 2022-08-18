@@ -27,9 +27,12 @@ public class TagsService {
                 .toList();
     }
 
-    public void tagCreate(TagCreateDTO tag){
-        TagEntity tagEntity = objectMapper.convertValue(tag, TagEntity.class);
-        tagRepository.save(tagEntity);
+    public TagEntity tagCreate(TagCreateDTO tag) {
+        Optional<TagEntity> buscar = tagRepository.findByName(tag.getName().toUpperCase().replace(" ", "_"));
+        if (buscar.isEmpty()) {
+            return tagRepository.save(TagEntity.builder().name(tag.getName()).build());
+        }
+        return buscar.get();
     }
 
     public boolean existsByName(String name){
