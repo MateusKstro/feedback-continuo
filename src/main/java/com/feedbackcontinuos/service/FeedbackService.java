@@ -4,7 +4,6 @@ package com.feedbackcontinuos.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feedbackcontinuos.dto.*;
 import com.feedbackcontinuos.entity.FeedBackEntity;
-import com.feedbackcontinuos.entity.TagEntity;
 import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.repository.FeedBackRepository;
@@ -17,18 +16,15 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class FeedbackService {
 
     private final UsersService usersService;
-
     private final TagsService tagsService;
-
     private final FeedBackRepository feedbackRepository;
-
     private final ObjectMapper objectMapper;
 
     //test
@@ -39,7 +35,7 @@ public class FeedbackService {
         feedBack.setFeedbackEntityGiven(userSend);
         feedBack.setFeedbackEntityReceived(userRecived);
         feedBack.setDataEHora(LocalDateTime.now(ZoneId.systemDefault()));
-        for (TagDTO tag : createDTO.getTagsList()) {
+        for (TagCreateDTO tag : createDTO.getTagsList()) {
             if (tagsService.existsByName(tag.getName())) {
                 break;
             } else {
@@ -75,8 +71,5 @@ public class FeedbackService {
                 .toList();
         return new PageDTO<>(pagina.getTotalElements(), pagina.getTotalPages(), page, 3, feedbacks);
     }
-
 }
-
-
 

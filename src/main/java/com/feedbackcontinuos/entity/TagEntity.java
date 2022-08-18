@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -28,5 +29,5 @@ public class TagEntity {
     @JoinTable(name = "feedback_tags",
             joinColumns = @JoinColumn(name = "id_tag"),
             inverseJoinColumns = @JoinColumn(name = "id_feedback"))
-    private Set<FeedBackEntity> feedBackEntities;
+    private List<FeedBackEntity> feedBackEntities;
 }

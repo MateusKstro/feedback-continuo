@@ -28,5 +28,5 @@ public class FeedbackCreateDTO {
 
     @NotEmpty
     @Schema(description = "Lista de tags")
-    private List<TagDTO> tagsList;
+    private List<TagCreateDTO> tagsList;
 }

@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class TagDTO extends TagCreateDTO{
+public class TagCreateDTO {
 
-    @Schema(description = "Id da tag")
-    private Integer idTag;
+    @Schema(description = "nome da tag")
+    private String name;
 }

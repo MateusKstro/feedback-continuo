@@ -2,6 +2,7 @@ package com.feedbackcontinuos.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.feedbackcontinuos.dto.TagCreateDTO;
 import com.feedbackcontinuos.dto.TagDTO;
 import com.feedbackcontinuos.entity.TagEntity;
 import com.feedbackcontinuos.enums.Tags;
@@ -26,18 +27,9 @@ public class TagsService {
                 .toList();
     }
 
-    public void tagCreate(TagDTO tag){
+    public void tagCreate(TagCreateDTO tag){
         TagEntity tagEntity = objectMapper.convertValue(tag, TagEntity.class);
         tagRepository.save(tagEntity);
-    }
-
-
-    public TagEntity findTag (Tags tags) {
-        Optional<TagEntity> buscarTag = tagRepository.findByName(tags.getName());
-        if(buscarTag.isEmpty()){
-            return tagRepository.saveAndFlush(TagEntity.builder().name(tags.getName()).build());
-        }
-        return buscarTag.get();
     }
 
     public boolean existsByName(String name){
