@@ -76,20 +76,20 @@ public class UsersServiceTest {
         assertEquals(usersEntity.getUserRole(), usersEntity1.getUserRole());
     }
 
-    @Test
-    public void deveTestarFindAllComSucesso() throws RegraDeNegocioException {
-        UsersEntity usersEntity = getUsersEntity();
-
-        List<UsersEntity> usersEntities = List.of(usersEntity);
-
-        criarUsuarioLogado();
-
-        when(usersRepository.findById(anyInt())).thenReturn(Optional.of(usersEntity));
-
-        usersService.findAll();
-
-        assertNotNull(usersEntities);
-    }
+//    @Test
+//    public void deveTestarFindAllComSucesso() throws RegraDeNegocioException {
+//        UsersEntity usersEntity = getUsersEntity();
+//
+//        List<UsersEntity> usersEntities = List.of(usersEntity);
+//
+//        criarUsuarioLogado();
+//
+//        when(usersRepository.findById(anyInt())).thenReturn(Optional.of(usersEntity));
+//
+//        usersService.findAll();
+//
+//        assertNotNull(usersEntities);
+//    }
 
     @Test
     public void deveTestarFindByEmailComSucesso(){

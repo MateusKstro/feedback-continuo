@@ -2,10 +2,7 @@ package com.feedbackcontinuos.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.feedbackcontinuos.dto.FeedbackCreateDTO;
-import com.feedbackcontinuos.dto.FeedbackDTO;
-import com.feedbackcontinuos.dto.PageDTO;
-import com.feedbackcontinuos.dto.TagCreateDTO;
+import com.feedbackcontinuos.dto.*;
 import com.feedbackcontinuos.entity.FeedBackEntity;
 import com.feedbackcontinuos.entity.TagEntity;
 import com.feedbackcontinuos.entity.UsersEntity;
@@ -32,7 +29,6 @@ public class FeedbackService {
     private final FeedBackRepository feedbackRepository;
     private final ObjectMapper objectMapper;
 
-    //test
     public void create(FeedbackCreateDTO createDTO) throws RegraDeNegocioException {
         UsersEntity userSend = usersService.getLoggedUser();
         UsersEntity userRecived = usersService.findById(createDTO.getFeedbackUserId());
@@ -48,18 +44,17 @@ public class FeedbackService {
         feedbackRepository.save(feedBack);
     }
 
+    public PageDTO<FeedbackDTO> getGivedFeedbacks(Integer page) throws RegraDeNegocioException {
+        UsersEntity usersEntity = usersService.getLoggedUser();
+        Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "dataEHora");
+        Page<FeedBackEntity> pagina = feedbackRepository.findByUserId(pageable, usersEntity.getIdUser());
+        return getFeedbackDTOPageDTO(page, pagina);
+    }
 
     public PageDTO<FeedbackDTO> getReceivedFeedbacks(Integer page) throws RegraDeNegocioException {
         UsersEntity usersEntity = usersService.getLoggedUser();
         Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "dataEHora");
         Page<FeedBackEntity> pagina = feedbackRepository.findByFeedbackUserId(pageable, usersEntity.getIdUser());
-        return getFeedbackDTOPageDTO(page, pagina);
-    }
-
-    public PageDTO<FeedbackDTO> getGivedFeedbacks(Integer page) throws RegraDeNegocioException {
-        UsersEntity usersEntity = usersService.getLoggedUser();
-        Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "dataEHora");
-        Page<FeedBackEntity> pagina = feedbackRepository.findByUserId(pageable, usersEntity.getIdUser());
         return getFeedbackDTOPageDTO(page, pagina);
     }
 

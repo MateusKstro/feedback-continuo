@@ -45,7 +45,7 @@ public class UsersController {
     @Operation(summary = "Gerar um token para acesso ao sistema", description = "Retorna um token válido")
     @ApiResponse(responseCode = "200", description = "Retorna um token válido")
     @PostMapping("/login")
-    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO login) {
+    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO login) throws RegraDeNegocioException {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         login.getLogin(),
@@ -80,8 +80,8 @@ public class UsersController {
     @Operation(summary = "Listar todos os usuários, exceto o que está logado", description = "Lista todos os usuários, exceto o logado")
     @ApiResponse(responseCode = "200", description = "Lista todos os usuários, exceto o logado")
     @GetMapping("/list-all")
-    public ResponseEntity<List<UserWithNameAndAvatarDTO>> getAll() throws RegraDeNegocioException {
-        return new ResponseEntity<>(usersService.findAll(), HttpStatus.OK);
+    public ResponseEntity<PageDTO<UserWithNameAndAvatarDTO>> getAll(Integer page, Integer register) throws RegraDeNegocioException {
+        return new ResponseEntity<>(usersService.findAll(page, register), HttpStatus.OK);
     }
 
     @Operation(summary = "Recuperar o usuário logado", description = "Retorna o usuário logado")

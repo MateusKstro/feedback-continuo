@@ -1,6 +1,8 @@
 package com.feedbackcontinuos.security;
 
 import com.feedbackcontinuos.entity.UsersEntity;
+import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
+import com.feedbackcontinuos.repository.UsersRepository;
 import com.feedbackcontinuos.service.UsersService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -20,13 +22,15 @@ public class TokenService {
 
     @Value("${jwt.secret}")
     private String secret;
-
     @Value("${jwt.expiration}")
     private String expiration;
 
+    private final UsersRepository usersRepository;
+
     private static final String KEY_CARGO = "roles";
 
-    public String getToken(UsersEntity usersEntity) {
+    public String getToken(UsersEntity usersEntity) throws RegraDeNegocioException {
+
         Date now = new Date();
         Date exp = new Date(now.getTime() + Long.valueOf(expiration));
 

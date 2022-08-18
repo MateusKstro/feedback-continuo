@@ -1,15 +1,16 @@
 package com.feedbackcontinuos.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.feedbackcontinuos.dto.UserFullDTO;
-import com.feedbackcontinuos.dto.UserWithNameAndAvatarDTO;
-import com.feedbackcontinuos.dto.UsersCreateDTO;
-import com.feedbackcontinuos.dto.UsersDTO;
+import com.feedbackcontinuos.dto.*;
 import com.feedbackcontinuos.entity.AccessEntity;
 import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class UsersService {
             new AccessEntity(1, "ROLE_USER", null);
 
     public UsersDTO create(UsersCreateDTO usersCreateDTO) throws RegraDeNegocioException {
-        if (usersRepository.existsByEmail(usersCreateDTO.getEmail())){
+        if (usersRepository.existsByEmail(usersCreateDTO.getEmail())) {
             throw new RegraDeNegocioException("Usuário já possui cadastro no sistema");
         } else {
             UsersEntity user = objectMapper.convertValue(usersCreateDTO, UsersEntity.class);
@@ -45,7 +46,7 @@ public class UsersService {
     }
 
     public void uploadFile(Integer id, Optional<MultipartFile> file) throws RegraDeNegocioException, IOException {
-        if (file.isPresent()){
+        if (file.isPresent()) {
             UsersEntity user = findById(id);
             byte[] byteArray = file.get().getBytes();
             user.setAvatar(Base64.getEncoder().encodeToString(byteArray));
@@ -57,12 +58,13 @@ public class UsersService {
 //        Optional<UsersEntity> user = fi
 //    }
 
-    public List<UserWithNameAndAvatarDTO> findAll() throws RegraDeNegocioException {
-        List<UsersEntity> users = usersRepository.findAll();
-        users.remove(getLoggedUser());
-        return users.stream()
+    public PageDTO<UserWithNameAndAvatarDTO> findAll(Integer page, Integer register) throws RegraDeNegocioException {
+        Pageable pageable = PageRequest.of(page, register);
+        Page<UsersEntity> page1 = usersRepository.page(getLoggedUser().getIdUser(), pageable);
+        List<UserWithNameAndAvatarDTO> user = page1.getContent().stream()
                 .map(usersEntity -> objectMapper.convertValue(usersEntity, UserWithNameAndAvatarDTO.class))
                 .toList();
+        return new PageDTO<>(page1.getTotalElements(), page1.getTotalPages(), page, register, user);
     }
 
     public void delete(Integer id) throws RegraDeNegocioException {
