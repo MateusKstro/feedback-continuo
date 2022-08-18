@@ -51,9 +51,7 @@ public class FeedbackService {
 
     public PageDTO<FeedbackDTO> getReceivedFeedbacks(Integer page) throws RegraDeNegocioException {
         UsersEntity usersEntity = usersService.getLoggedUser();
-
         Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "dataEHora");
-
         Page<FeedBackEntity> pagina = feedbackRepository.findByFeedbackUserId(pageable, usersEntity.getIdUser());
         return getFeedbackDTOPageDTO(page, pagina);
     }
