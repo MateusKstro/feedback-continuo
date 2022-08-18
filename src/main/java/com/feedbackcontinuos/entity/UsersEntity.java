@@ -42,7 +42,7 @@ public class UsersEntity implements UserDetails {
 
     @JsonIgnore
     @OneToMany(mappedBy = "feedbackEntityReceived", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FeedBackEntity> feedBackEntities;
+    private List<FeedBackEntity> feedBackReceived;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_access", referencedColumnName = "id_access")

@@ -2,10 +2,12 @@ package com.feedbackcontinuos.controller;
 
 import com.feedbackcontinuos.dto.FeedbackCompletoDTO;
 import com.feedbackcontinuos.dto.FeedbackCreateDTO;
+import com.feedbackcontinuos.dto.FeedbackDTO;
 import com.feedbackcontinuos.dto.PageDTO;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.service.FeedbackService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class FeedbackController {
 
-    private final FeedbackService feedbackService;
+    @Autowired
+    private  FeedbackService feedbackService;
+
+
 
 
     @PostMapping
@@ -26,12 +31,12 @@ public class FeedbackController {
 
 
     @GetMapping("/receveid")
-    public ResponseEntity<PageDTO<FeedbackCompletoDTO>> getReceveidFeedback(@RequestParam Integer page) throws RegraDeNegocioException {
+    public ResponseEntity<PageDTO<FeedbackDTO>> getReceveidFeedback(@RequestParam Integer page) throws RegraDeNegocioException {
         return ResponseEntity.ok(feedbackService.getReceivedFeedbacks(page));
     }
 
     @GetMapping("/gived")
-    public ResponseEntity<PageDTO<FeedbackCompletoDTO>> getGivenFeedback(@RequestParam Integer page) throws RegraDeNegocioException{
+    public ResponseEntity<PageDTO<FeedbackDTO>> getGivenFeedback(@RequestParam Integer page) throws RegraDeNegocioException{
         return ResponseEntity.ok(feedbackService.getGivedFeedbacks(page));
     }
 

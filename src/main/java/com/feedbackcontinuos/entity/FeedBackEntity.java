@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -54,5 +55,5 @@ public class FeedBackEntity {
     @JoinTable(name = "feedback_tags",
             joinColumns = @JoinColumn(name = "id_feedback"),
             inverseJoinColumns = @JoinColumn(name = "id_tag"))
-    private Set<TagEntity> tagEntities;
+    private List<TagEntity> tagsList;
 }
