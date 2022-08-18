@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feedbackcontinuos.dto.TagCreateDTO;
 import com.feedbackcontinuos.dto.TagDTO;
 import com.feedbackcontinuos.entity.TagEntity;
+import com.feedbackcontinuos.enums.Tags;
 import com.feedbackcontinuos.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -34,9 +34,9 @@ public class FeedbackService {
 
     //test
     public void create(FeedbackCreateDTO createDTO) throws RegraDeNegocioException {
-        FeedBackEntity feedBack = objectMapper.convertValue(createDTO, FeedBackEntity.class);
         UsersEntity userSend = usersService.getLoggedUser();
-        UsersEntity userRecived = usersService.findById(feedBack.getFeedbackUserId());
+        UsersEntity userRecived = usersService.findById(createDTO.getFeedbackUserId());
+        FeedBackEntity feedBack = objectMapper.convertValue(createDTO, FeedBackEntity.class);
         feedBack.setFeedbackEntityGiven(userSend);
         feedBack.setFeedbackEntityReceived(userRecived);
         feedBack.setDataEHora(LocalDateTime.now(ZoneId.systemDefault()));
@@ -51,7 +51,9 @@ public class FeedbackService {
 
     public PageDTO<FeedbackDTO> getReceivedFeedbacks(Integer page) throws RegraDeNegocioException {
         UsersEntity usersEntity = usersService.getLoggedUser();
+
         Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "dataEHora");
+
         Page<FeedBackEntity> pagina = feedbackRepository.findByFeedbackUserId(pageable, usersEntity.getIdUser());
         return getFeedbackDTOPageDTO(page, pagina);
     }

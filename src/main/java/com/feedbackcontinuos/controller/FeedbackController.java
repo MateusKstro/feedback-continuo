@@ -1,5 +1,6 @@
 package com.feedbackcontinuos.controller;
 
+import com.feedbackcontinuos.dto.FeedbackCompletoDTO;
 import com.feedbackcontinuos.dto.FeedbackCreateDTO;
 import com.feedbackcontinuos.dto.FeedbackDTO;
 import com.feedbackcontinuos.dto.PageDTO;
@@ -7,6 +8,7 @@ import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.service.FeedbackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +31,7 @@ public class FeedbackController {
 
 
     @GetMapping("/receveid")
-    public ResponseEntity<PageDTO<FeedbackDTO>> getReceveIdFeedback(@RequestParam Integer page) throws RegraDeNegocioException {
+    public ResponseEntity<PageDTO<FeedbackDTO>> getReceveidFeedback(@RequestParam Integer page) throws RegraDeNegocioException {
         return ResponseEntity.ok(feedbackService.getReceivedFeedbacks(page));
     }
 
@@ -47,4 +49,5 @@ public class FeedbackController {
     public ResponseEntity<PageDTO<FeedbackDTO>> getGivenFeedbackIdUser(@RequestParam Integer page, Integer id) throws RegraDeNegocioException{
         return ResponseEntity.ok(feedbackService.getGivedFeedbacksIdUser(page, id));
     }
+
 }
