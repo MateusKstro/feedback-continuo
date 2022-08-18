@@ -2,6 +2,7 @@ package com.feedbackcontinuos.controller;
 
 import com.feedbackcontinuos.dto.FeedbackCompletoDTO;
 import com.feedbackcontinuos.dto.FeedbackCreateDTO;
+import com.feedbackcontinuos.dto.FeedbackDTO;
 import com.feedbackcontinuos.dto.PageDTO;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.service.FeedbackService;
@@ -29,14 +30,14 @@ public class FeedbackController {
     }
 
 
-//    @GetMapping("/receveid")
-//    public ResponseEntity<PageDTO<FeedbackCompletoDTO>> getReceveidFeedback(@RequestParam Integer page) throws RegraDeNegocioException {
-//        return ResponseEntity.ok(feedbackService.getReceivedFeedbacks(page));
-//    }
-//
-//    @GetMapping("/gived")
-//    public ResponseEntity<PageDTO<FeedbackCompletoDTO>> getGivenFeedback(@RequestParam Integer page) throws RegraDeNegocioException{
-//        return ResponseEntity.ok(feedbackService.getGivedFeedbacks(page));
-//    }
+    @GetMapping("/receveid")
+    public ResponseEntity<PageDTO<FeedbackDTO>> getReceveidFeedback(@RequestParam Integer page) throws RegraDeNegocioException {
+        return ResponseEntity.ok(feedbackService.getReceivedFeedbacks(page));
+    }
+
+    @GetMapping("/gived")
+    public ResponseEntity<PageDTO<FeedbackDTO>> getGivenFeedback(@RequestParam Integer page) throws RegraDeNegocioException{
+        return ResponseEntity.ok(feedbackService.getGivedFeedbacks(page));
+    }
 
 }

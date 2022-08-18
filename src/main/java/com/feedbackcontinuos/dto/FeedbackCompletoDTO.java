@@ -1,23 +1,24 @@
 package com.feedbackcontinuos.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class FeedbackCompletoDTO {
 
     @Schema(description = "id do feedback")
-    private Integer feedbackId;
+    private Integer idFeedback;
 
     @Schema(description = "id de quem enviou")
-    private Integer idUser;
-
-    @Schema(description = "Nome do user")
-    private String userName;
+    private Integer userId;
 
     @Schema(description = "Foto de perfil")
     private String avatar;

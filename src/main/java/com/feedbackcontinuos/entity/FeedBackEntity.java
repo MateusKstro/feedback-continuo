@@ -55,5 +55,5 @@ public class FeedBackEntity {
     @JoinTable(name = "feedback_tags",
             joinColumns = @JoinColumn(name = "id_feedback"),
             inverseJoinColumns = @JoinColumn(name = "id_tag"))
-    private List<TagEntity> tagEntities;
+    private List<TagEntity> tagsList;
 }

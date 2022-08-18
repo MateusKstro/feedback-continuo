@@ -9,7 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FeedBackRepository extends JpaRepository <FeedBackEntity, Integer> {
 
-//    Page<FeedBackEntity> findByFeedBackUserId(Pageable pageable);
-//
-//    Page<FeedBackEntity> findByUserId(Pageable pageable);
+
+    Page<FeedBackEntity> findByFeedbackUserId(Pageable pageable, Integer idUser);
+
+    Page<FeedBackEntity> findByUserId(Pageable pageable, Integer idUser);
 }

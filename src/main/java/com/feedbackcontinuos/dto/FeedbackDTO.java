@@ -19,7 +19,7 @@ public class FeedbackDTO extends FeedbackCreateDTO{
     private Integer idFeedback;
 
     @Schema(description = "id do user que fez o feedback")
-    private Integer idUser;
+    private Integer userId;
 
     @Schema(description = "data de criacao")
     private LocalDateTime dataEHora;
