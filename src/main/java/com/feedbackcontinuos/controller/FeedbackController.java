@@ -40,7 +40,7 @@ public class FeedbackController {
     @ApiResponse(responseCode = "200", description = "Atualiza a visibilidade do feedback")
     @PutMapping
     public void updateFeedback(@RequestParam("idFeedback") Integer idFeedback,
-                               @RequestParam("publico") boolean publico) {
+                               @RequestParam("publico") boolean publico) throws RegraDeNegocioException {
         feedbackService.updateFeedback(idFeedback, publico);
     }
     @Operation(summary = "Gerar um page de feedbacks enviados", description = "Gera um page de feedbacks enviados")

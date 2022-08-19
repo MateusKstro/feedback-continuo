@@ -51,43 +51,33 @@ public class FeedbackService {
         }
     }
 
-    public void updateFeedback(Integer id, boolean publico) {
+    public void updateFeedback(Integer id, boolean publico) throws RegraDeNegocioException {
         Optional<FeedBackEntity> feedBack = feedbackRepository.findById(id);
         if (feedBack.isPresent()) {
             feedBack.get().setPublico(publico);
             feedbackRepository.save(feedBack.get());
+        } else {
+            throw new RegraDeNegocioException("Feedback inexistente");
         }
     }
 
     public List<FeedbackGivedDTO> getGivedFeedbacks() throws RegraDeNegocioException {
-        return feedbackRepository
-                .findByUserIdGived(usersService.getLoggedUser().getIdUser()).stream()
-                .map(feedBackEntity -> {
-                    FeedbackGivedDTO feedbackDTO = objectMapper.convertValue(feedBackEntity, FeedbackGivedDTO.class);
-                    feedbackDTO.setFeedbackEntityReceived(objectMapper.convertValue(feedBackEntity.getFeedbackEntityReceived(), UserWithNameAndAvatarDTO.class));
-                    feedbackDTO.setTagsList(feedBackEntity.getTagsList().stream()
-                            .map(tagEntity -> objectMapper.convertValue(tagEntity, TagCreateDTO.class))
-                            .toList());
-                    return feedbackDTO;
-                })
-                .toList();
+        return getFeedbackGivedDTOS(usersService.getLoggedUser().getIdUser());
     }
 
     public List<FeedbackRecivedDTO> getReceivedFeedbacks() throws RegraDeNegocioException {
-        return feedbackRepository
-                .findByUserIdRecived(usersService.getLoggedUser().getIdUser()).stream()
-                .map(feedBackEntity -> {
-                    FeedbackRecivedDTO feedbackDTO = objectMapper.convertValue(feedBackEntity, FeedbackRecivedDTO.class);
-                    feedbackDTO.setFeedbacksGiven(objectMapper.convertValue(feedBackEntity.getFeedbackEntityGiven(), UserWithNameAndAvatarDTO.class));
-                    feedbackDTO.setTagsList(feedBackEntity.getTagsList().stream()
-                            .map(tagEntity -> objectMapper.convertValue(tagEntity, TagCreateDTO.class))
-                            .toList());
-                    return feedbackDTO;
-                })
-                .toList();
+        return getFeedbackRecivedDTOS(usersService.getLoggedUser().getIdUser());
     }
 
     public List<FeedbackGivedDTO> getGivedFeedbacksIdUser(Integer id) {
+        return getFeedbackGivedDTOS(id);
+    }
+
+    public List<FeedbackRecivedDTO> getReceivedFeedbacksIdUser(Integer id) {
+        return getFeedbackRecivedDTOS(id);
+    }
+
+    private List<FeedbackGivedDTO> getFeedbackGivedDTOS(Integer id) {
         return feedbackRepository
                 .findByUserIdGived(id).stream()
                 .map(feedBackEntity -> {
@@ -101,7 +91,7 @@ public class FeedbackService {
                 .toList();
     }
 
-    public List<FeedbackRecivedDTO> getReceivedFeedbacksIdUser(Integer id) {
+    private List<FeedbackRecivedDTO> getFeedbackRecivedDTOS(Integer id) {
         return feedbackRepository
                 .findByUserIdRecived(id).stream()
                 .map(feedBackEntity -> {
