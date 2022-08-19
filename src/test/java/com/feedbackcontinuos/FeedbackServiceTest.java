@@ -120,7 +120,15 @@ public class FeedbackServiceTest {
 
         assertNotNull(feedBackEntity);
     }
-    
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveTestarPublicoFeedbackNull() throws RegraDeNegocioException {
+        FeedBackEntity feedBackEntity = null;
+
+        feedbackService.updateFeedback(2, true);
+
+        assertNotNull(feedBackEntity);
+    }
 
     private final FeedbackCreateDTO getFeedbackCreatDTOParaSiMemso() {
         FeedbackCreateDTO feedbackCreateDTO = new FeedbackCreateDTO();
