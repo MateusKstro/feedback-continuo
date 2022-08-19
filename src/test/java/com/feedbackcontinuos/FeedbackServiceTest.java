@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.feedbackcontinuos.dto.FeedbackCreateDTO;
+import com.feedbackcontinuos.dto.FeedbackRecivedDTO;
+import com.feedbackcontinuos.dto.PageDTO;
 import com.feedbackcontinuos.dto.TagCreateDTO;
 import com.feedbackcontinuos.entity.AccessEntity;
 import com.feedbackcontinuos.entity.FeedBackEntity;
@@ -23,6 +25,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -97,6 +100,7 @@ public class FeedbackServiceTest {
         UsersEntity usersEntity = getUsersEntity();
         Integer idFind = 1;
         List<FeedBackEntity> feedBackEntityList = new ArrayList<>();
+        feedBackEntityList.add(FeedBackEntity.builder().tagsList(List.of(TagEntity.builder().build())).build());
         Page<FeedBackEntity> feedBackEntityPage = new PageImpl<>(feedBackEntityList);
         when(usersService.getLoggedUser()).thenReturn(usersEntity);
         when(feedBackRepository.findByUserIdGived(anyInt(), any(Pageable.class))).thenReturn(feedBackEntityPage);
@@ -104,17 +108,19 @@ public class FeedbackServiceTest {
         assertNotNull(feedBackEntityPage);
     }
 
-//    @Test
-//    public void deveTetarPageDeFeedbacksReceivedIdUser() throws RegraDeNegocioException {
-//        UsersEntity usersEntity = getUsersEntity();
-//        Integer idFind = 2;
-//        List<FeedBackEntity> feedBackEntityList = new ArrayList<>();
-//        Page<FeedBackEntity> feedBackEntityPage = new PageImpl<>(feedBackEntityList);
-//        when(usersService.getLoggedUser()).thenReturn(usersEntity);
-//        when(feedBackRepository.findByUserIdRecived(anyInt(), any(Pageable.class))).thenReturn(feedBackEntityPage);
-//        feedbackService.getGivedFeedbacksIdUser(0, idFind);
-//        assertNotNull(feedBackEntityPage);
-//    }
+    @Test
+    public void deveTetarPageDeFeedbacksReceivedIdUser() throws RegraDeNegocioException {
+        UsersEntity usersEntity = getUsersEntity();
+        Integer idFind = 2;
+        List<FeedBackEntity> feedBackEntityList = new ArrayList<>();
+        feedBackEntityList.add(FeedBackEntity.builder().tagsList(List.of(TagEntity.builder().build())).build());
+        Page<FeedBackEntity> feedBackEntityPage = new PageImpl<>(feedBackEntityList);
+        PageRequest pageRequest = PageRequest.of(0,1);
+        when(usersService.getLoggedUser()).thenReturn(usersEntity);
+        when(feedBackRepository.findByUserIdRecived(anyInt(), any(Pageable.class))).thenReturn(feedBackEntityPage);
+        PageDTO<FeedbackRecivedDTO> paginarFeedback = feedbackService.getReceivedFeedbacksIdUser(0, idFind);
+        assertNotNull(feedBackEntityPage);
+    }
 
     private FeedbackCreateDTO getFeedbackCreatDTO() {
         FeedbackCreateDTO feedbackCreateDTO = new FeedbackCreateDTO();
