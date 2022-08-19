@@ -49,34 +49,26 @@ public class TagsServiceTest {
     @Test
     public void deveRetornarTag(){
         TagEntity tagEntity =  getTag();
-
         when(tagRepository.findByName(anyString())).thenReturn(Optional.ofNullable(tagEntity));
-
         TagEntity tags = tagsService.tagCreate(getTagCreateDTO());
-
         assertEquals(tagEntity, tags);
     }
 
     @Test
     public void deveCriarTag(){
-
         when(tagRepository.findByName(anyString())).thenReturn(Optional.empty());
-
         tagsService.tagCreate(getTagCreateDTO());
-
         verify(tagRepository, times(1)).save(any(TagEntity.class));
     }
 
-//    @Test
-//    public void deveListarTodasTags(){
-//        TagEntity tagEntity =  getTag();
-//
-//        when(tagRepository.findAll());
-//
-//        List<TagDTO> tag = tagsService.getAllTags();
-//
-//        assertEquals(tagEntity, tag);
-//    }
+    @Test
+    public void deveListarTodasTags(){
+        TagEntity tagEntity =  getTag();
+        List<TagEntity> tags = List.of(tagEntity);
+        when(tagRepository.findAll()).thenReturn(tags);
+        List<TagDTO> tag = tagsService.getAllTags();
+        assertEquals(tags.size(), tag.size());
+    }
 
 
     private TagEntity getTag(){

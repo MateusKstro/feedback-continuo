@@ -13,8 +13,8 @@ import java.util.Optional;
 @Repository
 public interface UsersRepository extends JpaRepository<UsersEntity, Integer> {
 
-    @Query("select u" +
-            " from users u " +
+    @Query(" select u" +
+            "  from users u " +
             " where u.idUser <> :idUser" +
             " order by u.name asc ")
     Page<UsersEntity> page(@Param("idUser") Integer idUser, Pageable pageable);

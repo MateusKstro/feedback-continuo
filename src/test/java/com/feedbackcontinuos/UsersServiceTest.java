@@ -4,14 +4,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.feedbackcontinuos.dto.UserFullDTO;
-import com.feedbackcontinuos.dto.UsersCreateDTO;
-import com.feedbackcontinuos.dto.UsersDTO;
+import com.feedbackcontinuos.dto.*;
 import com.feedbackcontinuos.entity.AccessEntity;
 import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.enums.Role;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.repository.UsersRepository;
+import com.feedbackcontinuos.service.FeedbackService;
 import com.feedbackcontinuos.service.UsersService;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,16 +18,22 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -54,77 +59,84 @@ public class UsersServiceTest {
     @Test
     public void deveTestarCriarUsuarioComSucesso() throws RegraDeNegocioException {
         UsersEntity usersEntity = getUsersEntity();
-
         when(usersRepository.save(any(UsersEntity.class))).thenReturn(usersEntity);
-
         UsersDTO usersDTO = usersService.create(getUsersCreateDTO());
-
         assertNotNull(usersDTO);
         assertNull(usersDTO.getIdUser());
     }
 
+
     @Test
     public void deveTestarBuscarUsuarioPeloIdComSucesso() throws RegraDeNegocioException {
         UsersEntity usersEntity = getUsersEntity();
-
         when(usersRepository.findById(anyInt())).thenReturn(Optional.of(usersEntity));
-
         UsersEntity usersEntity1 = usersService.findById(anyInt());
-
         assertNotNull(usersEntity1);
         assertEquals(usersEntity.getUsername(), usersEntity1.getUsername());
         assertEquals(usersEntity.getUserRole(), usersEntity1.getUserRole());
     }
 
-//    @Test
-//    public void deveTestarFindAllComSucesso() throws RegraDeNegocioException {
-//        UsersEntity usersEntity = getUsersEntity();
-//
-//        List<UsersEntity> usersEntities = List.of(usersEntity);
-//
-//        criarUsuarioLogado();
-//
-//        when(usersRepository.findById(anyInt())).thenReturn(Optional.of(usersEntity));
-//
-//        usersService.findAll();
-//
-//        assertNotNull(usersEntities);
-//    }
+    @Test
+    public void deveTestarFindAllComSucesso() throws RegraDeNegocioException {
+
+        List<UsersEntity> users = List.of(getUsersEntity());
+        Page<UsersEntity> page = new PageImpl<>(users);
+        UsersEntity users1 = getUsersEntity1();
+
+        criarUsuarioLogado();
+        when(usersRepository.findById(anyInt())).thenReturn(Optional.of(users1));
+
+        when(usersRepository.page(anyInt(),any(Pageable.class))).thenReturn(page);
+
+        PageDTO<UserWithNameAndAvatarDTO> paginaDeUsuarios = usersService
+                .findAll(0, 100);
+
+        assertFalse(paginaDeUsuarios.getContent().isEmpty());
+        assertEquals(1, paginaDeUsuarios.getContent().size());
+        assertEquals(users1.getName(), paginaDeUsuarios.getContent().get(0).getName());
+        assertEquals(users1.getAvatar(), paginaDeUsuarios.getContent().get(0).getAvatar());
+    }
 
     @Test
     public void deveTestarFindByEmailComSucesso(){
         UsersEntity usersEntity = getUsersEntity();
-
         when(usersRepository.findByEmail(anyString())).thenReturn(Optional.of(usersEntity));
-
         usersService.findByEmail(anyString());
-
         assertNotNull(usersEntity);
     }
 
     @Test
-    public void deveTestarGetById() throws RegraDeNegocioException {
+    public void deveTestarGetByIdComSucesso() throws RegraDeNegocioException {
         UsersEntity usersEntity = getUsersEntity();
-
         criarUsuarioLogado();
-
         when(usersRepository.findById(anyInt())).thenReturn(Optional.of(usersEntity));
-
-
         usersService.getById();
-
         assertNotNull(usersEntity);
     }
 
     @Test
-    public void deveTestarGetByIdUser() throws RegraDeNegocioException {
+    public void deveTestarGetByIdUserComSucesso() throws RegraDeNegocioException {
         UsersEntity usersEntity = getUsersEntity();
-
         when(usersRepository.findById(anyInt())).thenReturn(Optional.of(usersEntity));
-
         usersService.getByIdUser(anyInt());
-
         assertNotNull(usersEntity);
+    }
+
+    @Test()
+    public void deveTestarDeleteComSucesso() throws RegraDeNegocioException {
+        UsersEntity usersEntity = getUsersEntity();
+        when(usersRepository.findById(anyInt())).thenReturn(Optional.of(usersEntity));
+        usersService.delete(usersEntity.getIdUser());
+        assertNotNull(usersEntity);
+    }
+
+    @Test
+    public void deveTestarUploadComSucesso() throws RegraDeNegocioException, IOException {
+        UsersEntity usersEntity = getUsersEntity();
+        when(usersRepository.findById(anyInt())).thenReturn(Optional.of(usersEntity));
+        MockMultipartFile file = new MockMultipartFile("file", "teste.txt", "text/plain", "teste".getBytes());
+        usersService.uploadFile(anyInt(), Optional.of(file));
+        assertFalse(usersEntity.getAvatar().isEmpty());
     }
 
     private static AccessEntity getAccessEntity(){
@@ -146,6 +158,19 @@ public class UsersServiceTest {
         usersEntity.setAvatar(null);
         return usersEntity;
     }
+
+    private static UsersEntity getUsersEntity1() {
+        UsersEntity usersEntity = new UsersEntity();
+        usersEntity.setIdUser(2);
+        usersEntity.setAccessEntity(getAccessEntity());
+        usersEntity.setName("Bruno Rodrigues");
+        usersEntity.setUserRole("Desenvolvedor de Software");
+        usersEntity.setEmail("bruno.rodrigues@dbccompany.com.br");
+        usersEntity.setUserPassword("abc@123");
+        usersEntity.setAvatar(null);
+        return usersEntity;
+    }
+
     private static UsersCreateDTO getUsersCreateDTO(){
         UsersCreateDTO usersCreateDTO = new UsersCreateDTO();
         usersCreateDTO.setName("Bruno Rodrigues");

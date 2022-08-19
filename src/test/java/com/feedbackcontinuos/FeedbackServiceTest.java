@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.feedbackcontinuos.dto.FeedbackCreateDTO;
+import com.feedbackcontinuos.dto.FeedbackDTO;
 import com.feedbackcontinuos.dto.TagCreateDTO;
 import com.feedbackcontinuos.entity.AccessEntity;
 import com.feedbackcontinuos.entity.FeedBackEntity;
@@ -51,7 +52,7 @@ public class FeedbackServiceTest {
     private TagsService tagsService;
 
     @Before
-    public void init(){
+    public void init() {
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
@@ -136,9 +137,10 @@ public class FeedbackServiceTest {
         feedbackService.getReceivedFeedbacksIdUser(0, idFind);
 
         assertEquals(feedBackEntityPage, feedBackRepository.findByFeedbackUserId(any(), anyInt()));
+
     }
 
-    private FeedbackCreateDTO getFeedbackCreatDTO(){
+    private FeedbackCreateDTO getFeedbackCreatDTO() {
         FeedbackCreateDTO feedbackCreateDTO = new FeedbackCreateDTO();
         feedbackCreateDTO.setMessage("teste");
         feedbackCreateDTO.setFeedbackUserId(1);
@@ -147,7 +149,7 @@ public class FeedbackServiceTest {
         return feedbackCreateDTO;
     }
 
-    private TagCreateDTO getTagCreateDTO(){
+    private TagCreateDTO getTagCreateDTO() {
         TagCreateDTO tagCreateDTO = new TagCreateDTO();
         tagCreateDTO.setName("JAVA");
         tagCreateDTO.setName("JAVASCRIPT");
@@ -166,7 +168,7 @@ public class FeedbackServiceTest {
         return usersEntity;
     }
 
-    private AccessEntity getAccessEntity(){
+    private AccessEntity getAccessEntity() {
         AccessEntity accessEntity = new AccessEntity();
         accessEntity.setIdAccess(1);
         accessEntity.setAccessName("ROLE_USER");
@@ -175,5 +177,5 @@ public class FeedbackServiceTest {
     }
 
 
-    }
+}
 

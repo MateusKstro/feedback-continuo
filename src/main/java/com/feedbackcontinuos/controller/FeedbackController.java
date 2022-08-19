@@ -1,5 +1,6 @@
 package com.feedbackcontinuos.controller;
 
+import com.feedbackcontinuos.dto.FeedbackCompletoDTO;
 import com.feedbackcontinuos.dto.FeedbackCreateDTO;
 import com.feedbackcontinuos.dto.FeedbackDTO;
 import com.feedbackcontinuos.dto.PageDTO;

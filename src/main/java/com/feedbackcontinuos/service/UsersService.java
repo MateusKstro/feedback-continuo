@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,9 +30,7 @@ public class UsersService {
             new AccessEntity(1, "ROLE_USER", null);
 
     public UsersDTO create(UsersCreateDTO usersCreateDTO) throws RegraDeNegocioException {
-        if (usersRepository.existsByEmail(usersCreateDTO.getEmail())) {
-            throw new RegraDeNegocioException("Usuário já possui cadastro no sistema");
-        } else {
+        if (!usersRepository.existsByEmail(usersCreateDTO.getEmail())) {
             UsersEntity user = objectMapper.convertValue(usersCreateDTO, UsersEntity.class);
             user.setAccessEntity(accessEntity);
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -42,6 +39,8 @@ public class UsersService {
             user.setUserRole(usersCreateDTO.getUserRole().getDescription());
             usersRepository.save(user);
             return objectMapper.convertValue(user, UsersDTO.class);
+        } else {
+            throw new RegraDeNegocioException("Usuário já possui cadastro no sistema");
         }
     }
 
@@ -53,10 +52,6 @@ public class UsersService {
             usersRepository.save(user);
         }
     }
-
-//    public void UpdatePassword(String email){
-//        Optional<UsersEntity> user = fi
-//    }
 
     public PageDTO<UserWithNameAndAvatarDTO> findAll(Integer page, Integer register) throws RegraDeNegocioException {
         Pageable pageable = PageRequest.of(page, register);
@@ -89,7 +84,6 @@ public class UsersService {
         return (Integer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
-
     public UserFullDTO getById() throws RegraDeNegocioException {
         UsersEntity user = getLoggedUser();
         return objectMapper.convertValue(user, UserFullDTO.class);
@@ -99,4 +93,5 @@ public class UsersService {
         UsersEntity user = findById(id);
         return objectMapper.convertValue(user, UserFullDTO.class);
     }
+
 }
