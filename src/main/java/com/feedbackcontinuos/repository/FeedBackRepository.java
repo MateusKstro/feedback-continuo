@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FeedBackRepository extends JpaRepository <FeedBackEntity, Integer> {
-
     @Query(" select f " +
             "  from feedback f" +
             " where f.userId = :idUser " +

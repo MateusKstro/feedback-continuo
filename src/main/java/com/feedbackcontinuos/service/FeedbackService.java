@@ -8,7 +8,6 @@ import com.feedbackcontinuos.entity.TagEntity;
 import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.repository.FeedBackRepository;
-import com.feedbackcontinuos.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,13 +27,11 @@ public class FeedbackService {
     private final UsersService usersService;
     private final TagsService tagsService;
     private final FeedBackRepository feedbackRepository;
-
-    private final UsersRepository usersRepository;
     private final ObjectMapper objectMapper;
 
     public void create(FeedbackCreateDTO createDTO) throws RegraDeNegocioException {
         UsersEntity userSend = usersService.getLoggedUser();
-        if(createDTO.getFeedbackUserId().equals(userSend.getIdUser())) {
+        if(createDTO.getFeedbackUserId().equals(usersService.getLoggedUser().getIdUser())) {
             throw new RegraDeNegocioException("Não é possivel dar feedback para si mesmo");
         } else {
             UsersEntity userRecived = usersService.findById(createDTO.getFeedbackUserId());

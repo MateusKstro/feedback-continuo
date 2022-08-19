@@ -30,7 +30,7 @@ public class UsersService {
             new AccessEntity(1, "ROLE_USER", null);
 
     public UsersDTO create(UsersCreateDTO usersCreateDTO) throws RegraDeNegocioException {
-        if (!usersRepository.existsByEmail(usersCreateDTO.getEmail())) {
+        if (usersRepository.findByEmail(usersCreateDTO.getEmail()).isEmpty()) {
             UsersEntity user = objectMapper.convertValue(usersCreateDTO, UsersEntity.class);
             user.setAccessEntity(accessEntity);
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

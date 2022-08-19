@@ -25,11 +25,9 @@ public class TokenService {
     @Value("${jwt.expiration}")
     private String expiration;
 
-    private final UsersRepository usersRepository;
-
     private static final String KEY_CARGO = "roles";
 
-    public String getToken(UsersEntity usersEntity) throws RegraDeNegocioException {
+    public String getToken(UsersEntity usersEntity) {
 
         Date now = new Date();
         Date exp = new Date(now.getTime() + Long.valueOf(expiration));
