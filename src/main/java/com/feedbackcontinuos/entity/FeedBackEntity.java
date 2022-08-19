@@ -32,6 +32,9 @@ public class FeedBackEntity {
     @Column(name = "anonymous")
     private Boolean anonymous;
 
+    @Column(name = "public")
+    private Boolean publico;
+
     @Column(name = "id_user", insertable = false, updatable = false)
     private Integer userId;
 

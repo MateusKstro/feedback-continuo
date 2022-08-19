@@ -13,6 +13,8 @@ public class FeedbackGivedDTO {
     private String message;
     @Schema(description = "validando mensagem anonima")
     private Boolean anonymous;
+    @Schema(description = "Visibilidade do feeback")
+    private Boolean publico;
     @Schema(description = "id de quem recebeu o feedback")
     private UserWithNameAndAvatarDTO feedbackEntityReceived;
     @Schema(description = "Lista de tags")

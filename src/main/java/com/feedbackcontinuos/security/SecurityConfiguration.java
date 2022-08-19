@@ -30,11 +30,14 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((authz) ->
                         authz
 
+                                .antMatchers("/users/list-all-pageable").hasRole("USER")
                                 .antMatchers("/users/list-all").hasRole("USER")
                                 .antMatchers("/users/recover-logged-user").hasRole("USER")
-                                .antMatchers("/user/recover-user").hasRole("USER")
-                                .antMatchers(HttpMethod.POST, "/feedback").hasRole("USER")
+                                .antMatchers("/users/recover-users").hasRole("USER")
                                 .antMatchers(HttpMethod.DELETE, "/users").hasRole("USER")
+                                .antMatchers(HttpMethod.PUT, "/users").hasRole("USER")
+                                .antMatchers(HttpMethod.POST, "/feedback").hasRole("USER")
+                                .antMatchers(HttpMethod.PUT, "/feedback").hasRole("USER")
                                 .antMatchers(HttpMethod.GET, "/feedback/**").hasRole("USER")
                                 .antMatchers(HttpMethod.GET, "/tags").hasRole("USER")
                                 .anyRequest().authenticated()
@@ -51,7 +54,6 @@ public class SecurityConfiguration {
                 "/swagger-ui/**",
                 "/users/login",
                 "/users/create",
-                "/users/update-file",
                 "/");
     }
 

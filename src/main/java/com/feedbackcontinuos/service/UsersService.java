@@ -52,6 +52,11 @@ public class UsersService {
             usersRepository.save(user);
         }
     }
+    public List<UserWithNameAndAvatarDTO> getAllUsers() throws RegraDeNegocioException {
+        return usersRepository.findAll(getLoggedUser().getIdUser()).stream()
+                .map(user -> objectMapper.convertValue(user, UserWithNameAndAvatarDTO.class))
+                .toList();
+    }
 
     public PageDTO<UserWithNameAndAvatarDTO> findAll(Integer page, Integer register) throws RegraDeNegocioException {
         Pageable pageable = PageRequest.of(page, register);

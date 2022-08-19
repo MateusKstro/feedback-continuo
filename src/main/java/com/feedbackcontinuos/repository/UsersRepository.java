@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,6 +19,13 @@ public interface UsersRepository extends JpaRepository<UsersEntity, Integer> {
             " where u.idUser <> :idUser" +
             " order by u.name asc ")
     Page<UsersEntity> page(@Param("idUser") Integer idUser, Pageable pageable);
+
+    @Query(" select u" +
+            "  from users u " +
+            " where u.idUser <> :idUser" +
+            " order by u.name asc ")
+    List<UsersEntity> findAll(@Param("idUser") Integer idUser);
+
     Optional<UsersEntity> findByEmail(String email);
     boolean existsByEmail(String email);
 }

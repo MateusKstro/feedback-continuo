@@ -35,6 +35,13 @@ public class FeedbackController {
         feedbackService.create(feedbackCreateDTO);
         return ResponseEntity.ok().build();
     }
+    @Operation(summary = "Atualizar a visibilidade do feedback", description = "Atualiza a visibilidade do feedback")
+    @ApiResponse(responseCode = "200", description = "Atualiza a visibilidade do feedback")
+    @PutMapping
+    public void updateFeedback(@RequestParam("idFeedback") Integer idFeedback,
+                               @RequestParam("publico") boolean publico) {
+        feedbackService.updateFeedback(idFeedback, publico);
+    }
     @Operation(summary = "Gerar um page de feedbacks enviados", description = "Gera um page de feedbacks enviados")
     @ApiResponse(responseCode = "200", description = "Gera um page de feedbacks enviados")
     @GetMapping("/gived")
@@ -52,14 +59,14 @@ public class FeedbackController {
     @Operation(summary = "Gerar um page de feedbacks enviados por Id do User", description = "Gera um page de feedbacks enviados por Id do User")
     @ApiResponse(responseCode = "200", description = "Gera um page de feedbacks enviados por Id do User")
     @GetMapping("/gived-por-id")
-    public ResponseEntity<PageDTO<FeedbackGivedDTO>> getGivenFeedbackIdUser(@RequestParam Integer page, Integer id) throws RegraDeNegocioException{
+    public ResponseEntity<PageDTO<FeedbackGivedDTO>> getGivenFeedbackIdUser(@RequestParam Integer page, Integer id){
         return ResponseEntity.ok(feedbackService.getGivedFeedbacksIdUser(page, id));
     }
 
     @Operation(summary = "Gerar um page de feedbacks recebidos por Id do User", description = "Gera um page de feedbacks recebidos por Id do User")
     @ApiResponse(responseCode = "200", description = "Gera um page de feedbacks recebidos por Id do User")
     @GetMapping("/receveid-por-id")
-    public ResponseEntity<PageDTO<FeedbackRecivedDTO>> getReceveIdFeedbackIdUser(@RequestParam Integer page, Integer id) throws RegraDeNegocioException {
+    public ResponseEntity<PageDTO<FeedbackRecivedDTO>> getReceveIdFeedbackIdUser(@RequestParam Integer page, Integer id){
         return ResponseEntity.ok(feedbackService.getReceivedFeedbacksIdUser(page, id));
     }
 }

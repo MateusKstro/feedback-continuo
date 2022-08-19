@@ -20,6 +20,6 @@ public interface FeedBackRepository extends JpaRepository <FeedBackEntity, Integ
     @Query(" select f " +
             "  from feedback f" +
             " where f.feedbackUserId = :idUser " +
-            " order by f.dataEHora desc ")
+            " order by f.idFeedback desc ")
     Page<FeedBackEntity> findByUserIdRecived(@Param("idUser")Integer idUser, Pageable pageable);
 }

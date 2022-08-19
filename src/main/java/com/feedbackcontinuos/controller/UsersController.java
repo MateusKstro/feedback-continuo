@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -76,11 +77,18 @@ public class UsersController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "Listar todos os usuários, exceto o que está logado", description = "Lista todos os usuários, exceto o logado")
+    @Operation(summary = "Listar todos os usuários em page, exceto o logado", description = "Lista todos os usuários, exceto o logado")
     @ApiResponse(responseCode = "200", description = "Lista todos os usuários, exceto o logado")
-    @GetMapping("/list-all")
+    @GetMapping("/list-all-pageable")
     public ResponseEntity<PageDTO<UserWithNameAndAvatarDTO>> getAll(Integer page, Integer register) throws RegraDeNegocioException {
         return new ResponseEntity<>(usersService.findAll(page, register), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Listar todos os usuários, exceto o logado", description = "Lista todos os usuários, exceto o logado")
+    @ApiResponse(responseCode = "200", description = "Lista todos os usuários, exceto o logado")
+    @GetMapping("/list-all")
+    public ResponseEntity<List<UserWithNameAndAvatarDTO>> getAllUser() throws RegraDeNegocioException {
+        return new ResponseEntity<>(usersService.getAllUsers(), HttpStatus.OK);
     }
 
     @Operation(summary = "Recuperar o usuário logado", description = "Retorna o usuário logado")
@@ -92,7 +100,7 @@ public class UsersController {
 
     @Operation(summary = "Retornar usuário por id", description = "Retorna o usuário pelo id")
     @ApiResponse(responseCode = "200", description = "Retorna o usuário pelo id")
-    @GetMapping("/recover-user")
+    @GetMapping("/recover-users")
     public UserFullDTO getIdUser(Integer id) throws RegraDeNegocioException {
         return usersService.getByIdUser(id);
     }
