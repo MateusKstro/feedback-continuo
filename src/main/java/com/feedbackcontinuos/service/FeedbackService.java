@@ -8,6 +8,7 @@ import com.feedbackcontinuos.entity.TagEntity;
 import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.repository.FeedBackRepository;
+import com.feedbackcontinuos.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,22 +28,30 @@ public class FeedbackService {
     private final UsersService usersService;
     private final TagsService tagsService;
     private final FeedBackRepository feedbackRepository;
+
+    private final UsersRepository usersRepository;
     private final ObjectMapper objectMapper;
 
     public void create(FeedbackCreateDTO createDTO) throws RegraDeNegocioException {
         UsersEntity userSend = usersService.getLoggedUser();
-        UsersEntity userRecived = usersService.findById(createDTO.getFeedbackUserId());
-        FeedBackEntity feedBack = objectMapper.convertValue(createDTO, FeedBackEntity.class);
-        feedBack.setFeedbackEntityGiven(userSend);
-        feedBack.setPublico(true);
-        feedBack.setFeedbackEntityReceived(userRecived);
-        feedBack.setDataEHora(LocalDateTime.now(ZoneId.systemDefault()));
-        List<TagEntity> tags = new ArrayList<>();
-        for (TagCreateDTO tag : createDTO.getTagsList()) {
-             tags.add(tagsService.tagCreate(tag));
+        if(createDTO.getFeedbackUserId().equals(userSend.getIdUser())) {
+            throw new RegraDeNegocioException("Não é possivel dar feedback para si mesmo");
+        } else {
+            UsersEntity userRecived = usersService.findById(createDTO.getFeedbackUserId());
+            FeedBackEntity feedBack = objectMapper.convertValue(createDTO, FeedBackEntity.class);
+            feedBack.setFeedbackEntityGiven(userSend);
+            feedBack.setPublico(true);
+            feedBack.setFeedbackEntityReceived(userRecived);
+            feedBack.setDataEHora(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+            if (createDTO.getTagsList() != null) {
+                List<TagEntity> tags = new ArrayList<>();
+                for (TagCreateDTO tag : createDTO.getTagsList()) {
+                    tags.add(tagsService.tagCreate(tag));
+                }
+                feedBack.setTagsList(tags);
+            }
+            feedbackRepository.save(feedBack);
         }
-        feedBack.setTagsList(tags);
-        feedbackRepository.save(feedBack);
     }
 
     public void updateFeedback(Integer id, boolean publico) {

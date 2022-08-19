@@ -58,12 +58,11 @@ public class FeedbackServiceTest {
         ReflectionTestUtils.setField(feedbackService, "objectMapper", objectMapper);
     }
 
-    @Test
+    @Test(expected = RegraDeNegocioException.class)
     public void deveTestarCreateFeedbackByLoggedUserComSucesso() throws RegraDeNegocioException {
         UsersEntity usersEntity = getUsersEntity();
         FeedbackCreateDTO feedbackCreateDTO = getFeedbackCreatDTO();
         when(usersService.getLoggedUser()).thenReturn(usersEntity);
-        when(tagsService.tagCreate(any())).thenReturn(TagEntity.builder().build());
         feedbackService.create(feedbackCreateDTO);
         assertNotNull(feedbackCreateDTO);
         assertSame(feedbackCreateDTO.getFeedbackUserId(), usersEntity.getIdUser());
