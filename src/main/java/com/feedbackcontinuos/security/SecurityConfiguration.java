@@ -35,6 +35,8 @@ public class SecurityConfiguration {
                                 .antMatchers("/user/recover-user").hasRole("USER")
                                 .antMatchers(HttpMethod.POST, "/feedback").hasRole("USER")
                                 .antMatchers(HttpMethod.DELETE, "/users").hasRole("USER")
+                                .antMatchers(HttpMethod.GET, "/feedback/**").hasRole("USER")
+                                .antMatchers(HttpMethod.GET, "/tags").hasRole("USER")
                                 .anyRequest().authenticated()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);

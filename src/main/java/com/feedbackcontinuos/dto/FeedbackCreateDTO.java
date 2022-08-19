@@ -1,7 +1,5 @@
 package com.feedbackcontinuos.dto;
 
-import com.feedbackcontinuos.entity.TagEntity;
-import com.feedbackcontinuos.enums.Tags;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

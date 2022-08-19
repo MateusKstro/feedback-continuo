@@ -8,17 +8,21 @@ import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.service.FeedbackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/feedback")
 @RequiredArgsConstructor
+@Validated
 public class FeedbackController {
 
     private final FeedbackService feedbackService;
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody FeedbackCreateDTO feedbackCreateDTO) throws RegraDeNegocioException {
+    public ResponseEntity<Void> create(@RequestBody @Valid FeedbackCreateDTO feedbackCreateDTO) throws RegraDeNegocioException {
         feedbackService.create(feedbackCreateDTO);
         return ResponseEntity.ok().build();
     }
