@@ -26,8 +26,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -112,7 +114,18 @@ public class FeedbackServiceTest {
         assertNotNull(feedBackEntityPage);
     }
 
-    private FeedbackCreateDTO getFeedbackCreatDTO() {
+    @Test
+    public void deveTestarPublicoFeedBack(){
+        Optional<FeedBackEntity> feedBackEntity = Optional.of(getFeedBackEntity());
+
+        when(feedBackRepository.findById(anyInt())).thenReturn(feedBackEntity);
+
+        feedbackService.updateFeedback(2, true);
+
+        assertNotNull(feedBackEntity);
+    }
+
+    private final FeedbackCreateDTO getFeedbackCreatDTO() {
         FeedbackCreateDTO feedbackCreateDTO = new FeedbackCreateDTO();
         feedbackCreateDTO.setMessage("teste");
         feedbackCreateDTO.setFeedbackUserId(1);
@@ -121,14 +134,26 @@ public class FeedbackServiceTest {
         return feedbackCreateDTO;
     }
 
-    private TagCreateDTO getTagCreateDTO() {
+    private final TagCreateDTO getTagCreateDTO() {
         TagCreateDTO tagCreateDTO = new TagCreateDTO();
         tagCreateDTO.setName("JAVA");
         tagCreateDTO.setName("JAVASCRIPT");
         return tagCreateDTO;
     }
 
-    private UsersEntity getUsersEntity() {
+    private final FeedBackEntity getFeedBackEntity(){
+        FeedBackEntity feedBackEntity = new FeedBackEntity();
+        feedBackEntity.setIdFeedback(1);
+        feedBackEntity.setMessage("teste");
+        feedBackEntity.setDataEHora(LocalDateTime.now());
+        feedBackEntity.setAnonymous(false);
+        feedBackEntity.setPublico(true);
+        feedBackEntity.setUserId(1);
+        feedBackEntity.setFeedbackUserId(2);
+        return feedBackEntity;
+    }
+
+    private final UsersEntity getUsersEntity() {
         UsersEntity usersEntity = new UsersEntity();
         usersEntity.setIdUser(1);
         usersEntity.setAccessEntity(getAccessEntity());
@@ -140,7 +165,7 @@ public class FeedbackServiceTest {
         return usersEntity;
     }
 
-    private AccessEntity getAccessEntity() {
+    private final AccessEntity getAccessEntity() {
         AccessEntity accessEntity = new AccessEntity();
         accessEntity.setIdAccess(1);
         accessEntity.setAccessName("ROLE_USER");

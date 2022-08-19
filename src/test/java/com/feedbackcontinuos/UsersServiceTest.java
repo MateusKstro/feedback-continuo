@@ -10,7 +10,6 @@ import com.feedbackcontinuos.entity.UsersEntity;
 import com.feedbackcontinuos.enums.Role;
 import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
 import com.feedbackcontinuos.repository.UsersRepository;
-import com.feedbackcontinuos.service.FeedbackService;
 import com.feedbackcontinuos.service.UsersService;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +26,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -179,6 +177,7 @@ public class UsersServiceTest {
         usersCreateDTO.setUserPassword("abc@123");
         return usersCreateDTO;
     }
+
 
     private void criarUsuarioLogado() {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
