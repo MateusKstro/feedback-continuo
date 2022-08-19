@@ -148,6 +148,19 @@ public class UsersServiceTest {
         assertNotNull(usersCreateDTO.getEmail());
     }
 
+    @Test
+    public void deveTestarListAll() throws RegraDeNegocioException {
+        List<UsersEntity> users = List.of(getUsersEntity());
+        UsersEntity users1 = getUsersEntity1();
+
+        criarUsuarioLogado();
+        when(usersRepository.findById(anyInt())).thenReturn(Optional.of(users1));
+
+        List<UserWithNameAndAvatarDTO> list = usersService.getAllUsers();
+
+        assertNotNull(users);
+    }
+
     private static AccessEntity getAccessEntity(){
         AccessEntity accessEntity = new AccessEntity();
         accessEntity.setIdAccess(1);
