@@ -137,6 +137,17 @@ public class UsersServiceTest {
         assertFalse(usersEntity.getAvatar().isEmpty());
     }
 
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveTestardeveTestarCriarUsuario() throws RegraDeNegocioException {
+        UsersEntity usersEntity = getUsersEntity();
+        UsersCreateDTO usersCreateDTO = getUsersCreateDTO();
+        when(usersRepository.findByEmail(anyString())).thenReturn(Optional.of(usersEntity));
+        usersService.create(getUsersCreateDTO());
+        assertNotNull(usersCreateDTO);
+        assertSame(usersCreateDTO.getEmail(), "bruno.rodrigues@dbccompany.com.br");
+        assertNotNull(usersCreateDTO.getEmail());
+    }
+
     private static AccessEntity getAccessEntity(){
         AccessEntity accessEntity = new AccessEntity();
         accessEntity.setIdAccess(1);
