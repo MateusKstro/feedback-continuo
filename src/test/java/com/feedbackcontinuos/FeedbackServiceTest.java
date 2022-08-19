@@ -105,8 +105,8 @@ public class FeedbackServiceTest {
         Integer idFind = 1;
         List<FeedBackEntity> feedBackEntityList = new ArrayList<>();
         feedBackEntityList.add(FeedBackEntity.builder().tagsList(List.of(TagEntity.builder().build())).build());
-        when(feedBackRepository.findByUserIdRecived(anyInt())).thenReturn(feedBackEntityList);
-        feedbackService.getReceivedFeedbacksIdUser(idFind);
+        when(feedBackRepository.findByUserIdGived(anyInt())).thenReturn(feedBackEntityList);
+        feedbackService.getGivedFeedbacksIdUser(idFind);
         assertNotNull(feedBackEntityList);
     }
 

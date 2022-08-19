@@ -45,7 +45,7 @@ public class UsersController {
     @Operation(summary = "Gerar um token para acesso ao sistema", description = "Retorna um token válido")
     @ApiResponse(responseCode = "200", description = "Retorna um token válido")
     @PostMapping("/login")
-    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO login) throws RegraDeNegocioException {
+    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO login)  {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         login.getLogin(),

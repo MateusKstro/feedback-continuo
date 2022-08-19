@@ -1,9 +1,6 @@
 package com.feedbackcontinuos.security;
 
 import com.feedbackcontinuos.entity.UsersEntity;
-import com.feedbackcontinuos.exceptions.RegraDeNegocioException;
-import com.feedbackcontinuos.repository.UsersRepository;
-import com.feedbackcontinuos.service.UsersService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,7 +25,6 @@ public class TokenService {
     private static final String KEY_CARGO = "roles";
 
     public String getToken(UsersEntity usersEntity) {
-
         Date now = new Date();
         Date exp = new Date(now.getTime() + Long.valueOf(expiration));
 
