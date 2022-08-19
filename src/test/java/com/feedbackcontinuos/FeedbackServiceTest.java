@@ -59,13 +59,24 @@ public class FeedbackServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
+    public void deveTestarCreateFeedbackByLoggedUserParaSiMesmo() throws RegraDeNegocioException {
+        UsersEntity usersEntity = getUsersEntity();
+        FeedbackCreateDTO feedbackCreateDTO = getFeedbackCreatDTOParaSiMemso();
+        when(usersService.getLoggedUser()).thenReturn(usersEntity);
+        feedbackService.create(feedbackCreateDTO);
+        assertNotNull(feedbackCreateDTO);
+        assertSame(feedbackCreateDTO.getFeedbackUserId(), usersEntity.getIdUser());
+        assertFalse(feedbackCreateDTO.getTagsList().isEmpty());
+    }
+
+    @Test
     public void deveTestarCreateFeedbackByLoggedUserComSucesso() throws RegraDeNegocioException {
         UsersEntity usersEntity = getUsersEntity();
         FeedbackCreateDTO feedbackCreateDTO = getFeedbackCreatDTO();
         when(usersService.getLoggedUser()).thenReturn(usersEntity);
         feedbackService.create(feedbackCreateDTO);
         assertNotNull(feedbackCreateDTO);
-        assertSame(feedbackCreateDTO.getFeedbackUserId(), usersEntity.getIdUser());
+        assertSame(feedbackCreateDTO.getFeedbackUserId(), 2);
         assertFalse(feedbackCreateDTO.getTagsList().isEmpty());
     }
 
@@ -124,10 +135,19 @@ public class FeedbackServiceTest {
         assertNotNull(feedBackEntity);
     }
 
-    private final FeedbackCreateDTO getFeedbackCreatDTO() {
+    private final FeedbackCreateDTO getFeedbackCreatDTOParaSiMemso() {
         FeedbackCreateDTO feedbackCreateDTO = new FeedbackCreateDTO();
         feedbackCreateDTO.setMessage("teste");
         feedbackCreateDTO.setFeedbackUserId(1);
+        feedbackCreateDTO.setAnonymous(false);
+        feedbackCreateDTO.setTagsList(List.of(getTagCreateDTO()));
+        return feedbackCreateDTO;
+    }
+
+    private final FeedbackCreateDTO getFeedbackCreatDTO() {
+        FeedbackCreateDTO feedbackCreateDTO = new FeedbackCreateDTO();
+        feedbackCreateDTO.setMessage("teste");
+        feedbackCreateDTO.setFeedbackUserId(2);
         feedbackCreateDTO.setAnonymous(false);
         feedbackCreateDTO.setTagsList(List.of(getTagCreateDTO()));
         return feedbackCreateDTO;
