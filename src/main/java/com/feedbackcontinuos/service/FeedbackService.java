@@ -28,9 +28,7 @@ public class FeedbackService {
 
     public void create(FeedbackCreateDTO createDTO) throws RegraDeNegocioException {
         UsersEntity userSend = usersService.getLoggedUser();
-        if(createDTO.getFeedbackUserId().equals(usersService.getLoggedUser().getIdUser())) {
-            throw new RegraDeNegocioException("Não é possivel dar feedback para si mesmo");
-        } else {
+        if (!createDTO.getFeedbackUserId().equals(userSend.getIdUser())) {
             UsersEntity userRecived = usersService.findById(createDTO.getFeedbackUserId());
             FeedBackEntity feedBack = objectMapper.convertValue(createDTO, FeedBackEntity.class);
             feedBack.setFeedbackEntityGiven(userSend);
@@ -45,8 +43,11 @@ public class FeedbackService {
                 feedBack.setTagsList(tags);
             }
             feedbackRepository.save(feedBack);
+        } else {
+            throw new RegraDeNegocioException("Não é possivel dar feedback para si mesmo");
         }
     }
+
 
     public void updateFeedback(Integer id, boolean publico) throws RegraDeNegocioException {
         Optional<FeedBackEntity> feedBack = feedbackRepository.findById(id);

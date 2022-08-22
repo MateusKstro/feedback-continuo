@@ -44,6 +44,7 @@ public class FeedbackServiceTest {
     private FeedBackRepository feedBackRepository;
     @Mock
     private UsersService usersService;
+
     @Mock
     private TagsService tagsService;
 
@@ -101,7 +102,7 @@ public class FeedbackServiceTest {
     }
 
     @Test
-    public void deveTetarPageDeFeedbacksGivedIdUser()  {
+    public void deveTetarPageDeFeedbacksGivedIdUser() {
         Integer idFind = 1;
         List<FeedBackEntity> feedBackEntityList = new ArrayList<>();
         feedBackEntityList.add(FeedBackEntity.builder().tagsList(List.of(TagEntity.builder().build())).build());
@@ -130,7 +131,7 @@ public class FeedbackServiceTest {
         assertNotNull(feedBackEntity);
     }
 
-    private final FeedbackCreateDTO getFeedbackCreatDTOParaSiMemso() {
+    private FeedbackCreateDTO getFeedbackCreatDTOParaSiMemso() {
         FeedbackCreateDTO feedbackCreateDTO = new FeedbackCreateDTO();
         feedbackCreateDTO.setMessage("teste");
         feedbackCreateDTO.setFeedbackUserId(1);
@@ -139,7 +140,7 @@ public class FeedbackServiceTest {
         return feedbackCreateDTO;
     }
 
-    private final FeedbackCreateDTO getFeedbackCreatDTO() {
+    private FeedbackCreateDTO getFeedbackCreatDTO() {
         FeedbackCreateDTO feedbackCreateDTO = new FeedbackCreateDTO();
         feedbackCreateDTO.setMessage("teste");
         feedbackCreateDTO.setFeedbackUserId(2);
@@ -148,14 +149,14 @@ public class FeedbackServiceTest {
         return feedbackCreateDTO;
     }
 
-    private final TagCreateDTO getTagCreateDTO() {
+    private TagCreateDTO getTagCreateDTO() {
         TagCreateDTO tagCreateDTO = new TagCreateDTO();
         tagCreateDTO.setName("JAVA");
         tagCreateDTO.setName("JAVASCRIPT");
         return tagCreateDTO;
     }
 
-    private final FeedBackEntity getFeedBackEntity(){
+    private FeedBackEntity getFeedBackEntity() {
         FeedBackEntity feedBackEntity = new FeedBackEntity();
         feedBackEntity.setIdFeedback(1);
         feedBackEntity.setMessage("teste");
@@ -167,7 +168,7 @@ public class FeedbackServiceTest {
         return feedBackEntity;
     }
 
-    private final UsersEntity getUsersEntity() {
+    private UsersEntity getUsersEntity() {
         UsersEntity usersEntity = new UsersEntity();
         usersEntity.setIdUser(1);
         usersEntity.setAccessEntity(getAccessEntity());
@@ -179,14 +180,12 @@ public class FeedbackServiceTest {
         return usersEntity;
     }
 
-    private final AccessEntity getAccessEntity() {
+    private AccessEntity getAccessEntity() {
         AccessEntity accessEntity = new AccessEntity();
         accessEntity.setIdAccess(1);
         accessEntity.setAccessName("ROLE_USER");
         accessEntity.setUsersEntities(null);
         return accessEntity;
     }
-
-
 }
 
