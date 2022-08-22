@@ -43,28 +43,28 @@ public class FeedbackController {
                                @RequestParam("publico") boolean publico) throws RegraDeNegocioException {
         feedbackService.updateFeedback(idFeedback, publico);
     }
-    @Operation(summary = "Gerar um page de feedbacks enviados", description = "Gera um page de feedbacks enviados")
+    @Operation(summary = "Gerar uma lista de feedbacks enviados", description = "Gera um page de feedbacks enviados")
     @ApiResponse(responseCode = "200", description = "Gera um page de feedbacks enviados")
     @GetMapping("/gived")
     public ResponseEntity<List<FeedbackGivedDTO>> getGivenFeedback() throws RegraDeNegocioException{
         return ResponseEntity.ok(feedbackService.getGivedFeedbacks());
     }
 
-    @Operation(summary = "Gerar um page de feedbacks recebidos", description = "Gera um page de feedbacks recebidos")
+    @Operation(summary = "Gerar uma lista de feedbacks recebidos", description = "Gera um page de feedbacks recebidos")
     @ApiResponse(responseCode = "200", description = "Gera um page de feedbacks recebidos")
     @GetMapping("/receveid")
     public ResponseEntity<List<FeedbackRecivedDTO>> getReceveidFeedback() throws RegraDeNegocioException {
         return ResponseEntity.ok(feedbackService.getReceivedFeedbacks());
     }
 
-    @Operation(summary = "Gerar um page de feedbacks enviados por Id do User", description = "Gera um page de feedbacks enviados por Id do User")
+    @Operation(summary = "Gerar uma lista de feedbacks enviados por Id do User", description = "Gera um page de feedbacks enviados por Id do User")
     @ApiResponse(responseCode = "200", description = "Gera um page de feedbacks enviados por Id do User")
     @GetMapping("/gived-por-id")
     public ResponseEntity<List<FeedbackGivedDTO>> getGivenFeedbackIdUser(Integer idUser){
         return ResponseEntity.ok(feedbackService.getGivedFeedbacksIdUser(idUser));
     }
 
-    @Operation(summary = "Gerar um page de feedbacks recebidos por Id do User", description = "Gera um page de feedbacks recebidos por Id do User")
+    @Operation(summary = "Gerar uma lista de feedbacks recebidos por Id do User", description = "Gera um page de feedbacks recebidos por Id do User")
     @ApiResponse(responseCode = "200", description = "Gera um page de feedbacks recebidos por Id do User")
     @GetMapping("/receveid-por-id")
     public ResponseEntity<List<FeedbackRecivedDTO>> getReceveIdFeedbackIdUser(Integer idUser){

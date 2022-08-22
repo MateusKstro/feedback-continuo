@@ -80,7 +80,7 @@ public class FeedbackServiceTest {
     }
 
     @Test
-    public void deveTetarPageDeFeedbacksReceived() throws RegraDeNegocioException {
+    public void deveTetarListDeFeedbacksReceived() throws RegraDeNegocioException {
         UsersEntity usersEntity = getUsersEntity();
         List<FeedBackEntity> feedBackEntityList = new ArrayList<>();
         feedBackEntityList.add(FeedBackEntity.builder().tagsList(List.of(TagEntity.builder().build())).build());
@@ -91,7 +91,7 @@ public class FeedbackServiceTest {
     }
 
     @Test
-    public void deveTetarPageDeFeedbacksGived() throws RegraDeNegocioException {
+    public void deveTetarListDeFeedbacksGived() throws RegraDeNegocioException {
         UsersEntity usersEntity = getUsersEntity();
         List<FeedBackEntity> feedBackEntityList = new ArrayList<>();
         feedBackEntityList.add(FeedBackEntity.builder().tagsList(List.of(TagEntity.builder().build())).build());
@@ -102,7 +102,7 @@ public class FeedbackServiceTest {
     }
 
     @Test
-    public void deveTetarPageDeFeedbacksGivedIdUser() {
+    public void deveTetarListDeFeedbacksGivedIdUser() {
         Integer idFind = 1;
         List<FeedBackEntity> feedBackEntityList = new ArrayList<>();
         feedBackEntityList.add(FeedBackEntity.builder().tagsList(List.of(TagEntity.builder().build())).build());
