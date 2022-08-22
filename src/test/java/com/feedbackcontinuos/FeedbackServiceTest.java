@@ -112,6 +112,16 @@ public class FeedbackServiceTest {
     }
 
     @Test
+    public void deveTetarListDeFeedbacksReceivedIdUser() {
+        Integer idFind = 1;
+        List<FeedBackEntity> feedBackEntityList = new ArrayList<>();
+        feedBackEntityList.add(FeedBackEntity.builder().tagsList(List.of(TagEntity.builder().build())).build());
+        when(feedBackRepository.findByUserIdRecived(anyInt())).thenReturn(feedBackEntityList);
+        feedbackService.getReceivedFeedbacksIdUser(idFind);
+        assertNotNull(feedBackEntityList);
+    }
+
+    @Test
     public void deveTestarPublicoFeedBack() throws RegraDeNegocioException {
         Optional<FeedBackEntity> feedBackEntity = Optional.of(getFeedBackEntity());
 
