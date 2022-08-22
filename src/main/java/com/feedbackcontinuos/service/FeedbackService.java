@@ -48,7 +48,6 @@ public class FeedbackService {
         }
     }
 
-
     public void updateFeedback(Integer id, boolean publico) throws RegraDeNegocioException {
         Optional<FeedBackEntity> feedBack = feedbackRepository.findById(id);
         if (feedBack.isPresent()) {
@@ -62,11 +61,9 @@ public class FeedbackService {
     public List<FeedbackGivedDTO> getGivedFeedbacks() throws RegraDeNegocioException {
         return getFeedbackGivedDTOS(usersService.getLoggedUser().getIdUser());
     }
-
     public List<FeedbackRecivedDTO> getReceivedFeedbacks() throws RegraDeNegocioException {
         return getFeedbackRecivedDTOS(usersService.getLoggedUser().getIdUser());
     }
-
     public List<FeedbackGivedDTO> getGivedFeedbacksIdUser(Integer id) {
         return getFeedbackGivedDTOS(id);
     }

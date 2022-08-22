@@ -53,7 +53,6 @@ public class UsersController {
                 );
         Authentication authentication = authenticationManager
                 .authenticate(usernamePasswordAuthenticationToken);
-        log.info("Autenticado com sucesso!");
         Object usuarioLogado = authentication.getPrincipal();
         UsersEntity usuario = (UsersEntity) usuarioLogado;
         return new ResponseEntity<>(tokenService.getToken(usuario), HttpStatus.OK);
@@ -94,22 +93,22 @@ public class UsersController {
     @Operation(summary = "Recuperar o usuário logado", description = "Retorna o usuário logado")
     @ApiResponse(responseCode = "200", description = "Retorna o usuário logado")
     @GetMapping("/recover-logged-user")
-    public UserFullDTO getLoggedUser() throws RegraDeNegocioException {
-        return usersService.getById();
+    public ResponseEntity<UserFullDTO> getLoggedUser() throws RegraDeNegocioException {
+        return new ResponseEntity<>(usersService.getById(), HttpStatus.OK);
     }
 
     @Operation(summary = "Retornar usuário por id", description = "Retorna o usuário pelo id")
     @ApiResponse(responseCode = "200", description = "Retorna o usuário pelo id")
     @GetMapping("/recover-users")
-    public UserFullDTO getIdUser(Integer id) throws RegraDeNegocioException {
-        return usersService.getByIdUser(id);
+    public ResponseEntity<UserFullDTO> getIdUser(Integer id) throws RegraDeNegocioException {
+        return new ResponseEntity<>(usersService.getByIdUser(id), HttpStatus.OK);
     }
 
     @Operation(summary = "Deletar usuário por id", description = "Deleta o usuário pelo id")
     @ApiResponse(responseCode = "200", description = "Deleta o usuário pelo id")
     @DeleteMapping("/delete-user")
-    public void delete(Integer id) throws RegraDeNegocioException {
+    public ResponseEntity<Void> delete(Integer id) throws RegraDeNegocioException {
         usersService.delete(id);
+        return ResponseEntity.ok().build();
     }
-
 }
