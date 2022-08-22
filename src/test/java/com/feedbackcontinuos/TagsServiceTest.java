@@ -71,14 +71,14 @@ public class TagsServiceTest {
     }
 
 
-    private final TagEntity getTag(){
+    private TagEntity getTag(){
         TagEntity tagEntity = new TagEntity();
         tagEntity.setIdTag(1);
         tagEntity.setName("JAVA");
         return tagEntity;
     }
 
-    private final TagCreateDTO getTagCreateDTO(){
+    private TagCreateDTO getTagCreateDTO(){
         TagCreateDTO tagCreateDTO = new TagCreateDTO();
         tagCreateDTO.setName("TESTE");
         return tagCreateDTO;
