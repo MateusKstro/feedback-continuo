@@ -29,6 +29,7 @@ create table feedback (
     message text not null,
     date_create timestamp not null,
     anonymous boolean not null,
+    public boolean not null,
     id_user numeric not null,
     feedback_id_user numeric not null,
     primary key(id_feedback),
