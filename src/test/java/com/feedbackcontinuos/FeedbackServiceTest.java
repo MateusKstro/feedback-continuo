@@ -45,6 +45,7 @@ public class FeedbackServiceTest {
     @Mock
     private UsersService usersService;
 
+    // FIXME variável não utilizada
     @Mock
     private TagsService tagsService;
 
@@ -63,6 +64,8 @@ public class FeedbackServiceTest {
         FeedbackCreateDTO feedbackCreateDTO = getFeedbackCreatDTOParaSiMemso();
         when(usersService.getLoggedUser()).thenReturn(usersEntity);
         feedbackService.create(feedbackCreateDTO);
+
+        // FIXME não precisava desse assert
         assertNotNull(feedbackCreateDTO);
         assertSame(feedbackCreateDTO.getFeedbackUserId(), usersEntity.getIdUser());
         assertFalse(feedbackCreateDTO.getTagsList().isEmpty());
@@ -137,7 +140,7 @@ public class FeedbackServiceTest {
         FeedBackEntity feedBackEntity = null;
 
         feedbackService.updateFeedback(2, true);
-
+        // FIXME não precisava desse assert
         assertNotNull(feedBackEntity);
     }
 

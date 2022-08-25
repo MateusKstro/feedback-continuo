@@ -71,6 +71,7 @@ public class UsersController {
     public ResponseEntity<Void> update(@RequestPart("id") String id,
                                        @RequestPart(value = "file", required = false) Optional<MultipartFile> file)
             throws RegraDeNegocioException, IOException {
+        // FIXME deve somente fazer upload da foto do usuário logado... falha de segurança enorme
         Integer idUser = Integer.valueOf(id);
         usersService.uploadFile(idUser, file);
         return ResponseEntity.ok().build();
@@ -108,6 +109,7 @@ public class UsersController {
     @ApiResponse(responseCode = "200", description = "Deleta o usuário pelo id")
     @DeleteMapping("/delete-user")
     public ResponseEntity<Void> delete(Integer id) throws RegraDeNegocioException {
+        // FIXME falha de segurança aqui, será que todo mundo deve ter acesso a esse endpoint?
         usersService.delete(id);
         return ResponseEntity.ok().build();
     }

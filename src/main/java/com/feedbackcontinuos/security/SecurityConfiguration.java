@@ -29,7 +29,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests((authz) ->
                         authz
-
+                                // FIXME quantas roles tem o sistema de vcs? se tiver somente uma não precisaria dessas permissões
                                 .antMatchers("/users/list-all-pageable").hasRole("USER")
                                 .antMatchers("/users/list-all").hasRole("USER")
                                 .antMatchers("/users/recover-logged-user").hasRole("USER")

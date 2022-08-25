@@ -14,6 +14,7 @@ import java.util.Optional;
 @Repository
 public interface UsersRepository extends JpaRepository<UsersEntity, Integer> {
 
+    // FIXME que nome do método é esse? page?
     @Query(" select u" +
             "  from users u " +
             " where u.idUser <> :idUser" +
