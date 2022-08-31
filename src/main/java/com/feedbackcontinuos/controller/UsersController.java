@@ -68,12 +68,9 @@ public class UsersController {
     @Operation(summary = "Fazer o upload de uma foto de perfil para o usuário", description = "Upload de foto de perfil")
     @ApiResponse(responseCode = "200", description = "Upload de foto de perfil")
     @PutMapping(value = "/update-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> update(@RequestPart("id") String id,
-                                       @RequestPart(value = "file", required = false) Optional<MultipartFile> file)
+    public ResponseEntity<Void> update(@RequestPart(value = "file", required = false) Optional<MultipartFile> file)
             throws RegraDeNegocioException, IOException {
-        // FIXME deve somente fazer upload da foto do usuário logado... falha de segurança enorme
-        Integer idUser = Integer.valueOf(id);
-        usersService.uploadFile(idUser, file);
+        usersService.uploadFile(file);
         return ResponseEntity.ok().build();
     }
 
@@ -103,14 +100,5 @@ public class UsersController {
     @GetMapping("/recover-users")
     public ResponseEntity<UserFullDTO> getIdUser(Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(usersService.getByIdUser(id), HttpStatus.OK);
-    }
-
-    @Operation(summary = "Deletar usuário por id", description = "Deleta o usuário pelo id")
-    @ApiResponse(responseCode = "200", description = "Deleta o usuário pelo id")
-    @DeleteMapping("/delete-user")
-    public ResponseEntity<Void> delete(Integer id) throws RegraDeNegocioException {
-        // FIXME falha de segurança aqui, será que todo mundo deve ter acesso a esse endpoint?
-        usersService.delete(id);
-        return ResponseEntity.ok().build();
     }
 }

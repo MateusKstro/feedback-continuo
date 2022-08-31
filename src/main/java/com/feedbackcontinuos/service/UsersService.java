@@ -44,9 +44,9 @@ public class UsersService {
         }
     }
 
-    public void uploadFile(Integer id, Optional<MultipartFile> file) throws RegraDeNegocioException, IOException {
+    public void uploadFile(Optional<MultipartFile> file) throws RegraDeNegocioException, IOException {
         if (file.isPresent()) {
-            UsersEntity user = findById(id);
+            UsersEntity user = findById(getIdLoggedUser());
             byte[] byteArray = file.get().getBytes();
             user.setAvatar(Base64.getEncoder().encodeToString(byteArray));
             usersRepository.save(user);
@@ -60,7 +60,7 @@ public class UsersService {
 
     public PageDTO<UserWithNameAndAvatarDTO> findAll(Integer page, Integer register) throws RegraDeNegocioException {
         Pageable pageable = PageRequest.of(page, register);
-        Page<UsersEntity> page1 = usersRepository.page(getLoggedUser().getIdUser(), pageable);
+        Page<UsersEntity> page1 = usersRepository.paginarUsuariosEmCrescente(getLoggedUser().getIdUser(), pageable);
         List<UserWithNameAndAvatarDTO> user = page1.getContent().stream()
                 .map(usersEntity -> objectMapper.convertValue(usersEntity, UserWithNameAndAvatarDTO.class))
                 .toList();

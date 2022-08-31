@@ -14,12 +14,12 @@ import java.util.Optional;
 @Repository
 public interface UsersRepository extends JpaRepository<UsersEntity, Integer> {
 
-    // FIXME que nome do método é esse? page?
+
     @Query(" select u" +
             "  from users u " +
             " where u.idUser <> :idUser" +
             " order by u.name asc ")
-    Page<UsersEntity> page(@Param("idUser") Integer idUser, Pageable pageable);
+    Page<UsersEntity> paginarUsuariosEmCrescente(@Param("idUser") Integer idUser, Pageable pageable);
 
     @Query(" select u" +
             "  from users u " +

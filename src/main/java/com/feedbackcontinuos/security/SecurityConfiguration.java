@@ -29,17 +29,6 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests((authz) ->
                         authz
-                                // FIXME quantas roles tem o sistema de vcs? se tiver somente uma não precisaria dessas permissões
-                                .antMatchers("/users/list-all-pageable").hasRole("USER")
-                                .antMatchers("/users/list-all").hasRole("USER")
-                                .antMatchers("/users/recover-logged-user").hasRole("USER")
-                                .antMatchers("/users/recover-users").hasRole("USER")
-                                .antMatchers(HttpMethod.DELETE, "/users").hasRole("USER")
-                                .antMatchers(HttpMethod.PUT, "/users").hasRole("USER")
-                                .antMatchers(HttpMethod.POST, "/feedback").hasRole("USER")
-                                .antMatchers(HttpMethod.PUT, "/feedback").hasRole("USER")
-                                .antMatchers(HttpMethod.GET, "/feedback/**").hasRole("USER")
-                                .antMatchers(HttpMethod.GET, "/tags").hasRole("USER")
                                 .anyRequest().authenticated()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);

@@ -84,7 +84,7 @@ public class UsersServiceTest {
         criarUsuarioLogado();
         when(usersRepository.findById(anyInt())).thenReturn(Optional.of(users1));
 
-        when(usersRepository.page(anyInt(),any(Pageable.class))).thenReturn(page);
+        when(usersRepository.paginarUsuariosEmCrescente(anyInt(),any(Pageable.class))).thenReturn(page);
 
         PageDTO<UserWithNameAndAvatarDTO> paginaDeUsuarios = usersService
                 .findAll(0, 100);
@@ -133,7 +133,7 @@ public class UsersServiceTest {
         UsersEntity usersEntity = getUsersEntity();
         when(usersRepository.findById(anyInt())).thenReturn(Optional.of(usersEntity));
         MockMultipartFile file = new MockMultipartFile("file", "teste.txt", "text/plain", "teste".getBytes());
-        usersService.uploadFile(anyInt(), Optional.of(file));
+        usersService.uploadFile(Optional.of(file));
         assertFalse(usersEntity.getAvatar().isEmpty());
     }
 
